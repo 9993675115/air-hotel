@@ -1,0 +1,13 @@
+module.exports.authService = require('./auth.service');
+module.exports.tokenService = require('./token.service');
+module.exports.userService = require('./user.service');
+module.exports.commonService = require('./common.service');
+module.exports.supportService = require('./support.service')
+module.exports.supportDetailsService = require('./supportDetails.service')
+module.exports.bookingService = require('./booking.service')
+module.exports.bokingDetailsService = require('./bookingDetails.service')
+module.exports.ratingService = require('./rating.service')
+module.exports.paymentService = require('./payment.service')
+module.exports.roomsService = require('./rooms.service')
+module.exports.roomsTYPESService = require('./roomTypes.service')
+module.exports.addressService = require('./address.service')
