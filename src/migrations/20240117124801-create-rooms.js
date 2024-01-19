@@ -10,10 +10,7 @@ module.exports = {
         userId: {
           allowNull: false,
           type: Sequelize.INTEGER,
-          references: {
-            model: 'Users', // Assuming you have a 'users' table
-            key: 'id'
-          }
+        
         },
         roomNumber: {
           allowNull: false,
@@ -22,10 +19,7 @@ module.exports = {
         roomTypeId: {
           allowNull: false,
           type: Sequelize.INTEGER,
-          references: {
-            model: 'RoomTypes', // Assuming you have a 'roomTypes' table
-            key: 'id'
-          }
+          
         },
         status: {
           allowNull: false,

@@ -1,7 +1,7 @@
 // const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize,DataTypes) => {
-  const Support = sequelize.define('Supports', {
+  const Support = sequelize.define('Support', {
     subject: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -20,7 +20,7 @@ module.exports = (sequelize,DataTypes) => {
     },
   },
   {
-    tableName: 'Supports',
+    tableName: 'supports',
     freezeTableName: true
   });
 

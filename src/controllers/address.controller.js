@@ -19,7 +19,7 @@ const getAddressById = async (req, res) => {
   const userBody=req.body
   const data =await addressService.getAddressById(userBody)
   if(data){
-    res.status(200).send('GET Address by ID');
+    res.status(200).send('GET Address by ID',data);
   }else{
     res.status(404).send('not found');
   }

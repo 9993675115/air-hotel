@@ -46,18 +46,18 @@ module.exports = {
         userId: {
           allowNull: false,
           type: Sequelize.INTEGER,
-          references: {
-            model: 'Users', // Assuming you have a 'users' table
-            key: 'id'
-          }
+          // references: {
+          //   model: 'Users', // Assuming you have a 'users' table
+          //   key: 'id'
+          // }
         },
         roomId: {
           allowNull: false,
           type: Sequelize.INTEGER,
-          references: {
-            model: 'Rooms', // Assuming you have a 'rooms' table
-            key: 'id'
-          }
+          // references: {
+          //   model: 'Rooms', // Assuming you have a 'rooms' table
+          //   key: 'id'
+          // }
         },
         address: {
           allowNull: false,
@@ -65,7 +65,7 @@ module.exports = {
         },
         status: {
           allowNull: false,
-          type: Sequelize.STRING // Adjust the data type based on your requirements
+          type: Sequelize.BOOLEAN // Adjust the data type based on your requirements
         },
         createdAt: {
           allowNull: false,

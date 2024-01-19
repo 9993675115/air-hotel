@@ -4,20 +4,14 @@ const catchAsync = require('../utils/catchAsync');
 const { paymentService } = require('../services');
 
 const createPayment = catchAsync(async (req, res) => {
-  let userBody = req.body;
-  const data = await paymentService.createPayment(userBody);
-  console.log("--------------------------------------------",data)
-  if (data) {
-    await res.status(200).send({ message: 'created successfully' });
-  } else {
-    await res.status(404).send({ message: 'not created' });
-  }
+  const Payment = await paymentService.createPayment(req.body);
+  res.status(httpStatus.CREATED).send({ Payment });
 });
 const getPaymentById = async (req, res) => {
   const userBody=req.body
   const data =await paymentService.getPaymentById(userBody)
   if(data){
-    res.status(200).send('GET booking by ID');
+    res.status(200).send('GET booking by ID',data);
   }else{
     res.status(404).send('not found');
   }

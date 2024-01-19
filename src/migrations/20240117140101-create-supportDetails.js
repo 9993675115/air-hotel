@@ -25,7 +25,7 @@ module.exports = {
         },
         status: {
           allowNull: false,
-          type: Sequelize.STRING // Adjust the data type based on your requirements
+          type: Sequelize.BOOLEAN // Adjust the data type based on your requirements
         },
         createdAt: {
           allowNull: false,

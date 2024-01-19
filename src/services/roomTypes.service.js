@@ -6,9 +6,10 @@ const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 const { RoomType } = require('../models');
 
-const createRoomType = async (roomTypeBody) => {
-  const roomType = await RoomType.create(roomTypeBody);
-  return roomType;
+const createRoomType = async (_userBody) => {
+  const userBody = _userBody;
+  console.log("-----------",userBody)
+  return Booking.create(userBody);
 };
 const getRoomTypeById = async (roomTypeId) => {
   const roomType = await RoomType.findByPk(roomTypeId);

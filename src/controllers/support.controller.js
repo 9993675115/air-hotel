@@ -4,14 +4,14 @@ const catchAsync = require('../utils/catchAsync');
 const { supportService } = require('../services');
 
 const createSupport = catchAsync(async (req, res) => {
-  const support = await supportService.createSupport(req.body);
-  res.status(httpStatus.CREATED).send({ support });
+  const Support = await supportService.createSupport(req.body);
+  res.status(httpStatus.CREATED).send({ Support });
 });
 
 const getSupportById = catchAsync(async (req, res) => {
   const { supportId } = req.params;
-  const support = await supportService.getSupportById(supportId);
-  res.status(httpStatus.OK).send({ support });
+  const Support = await supportService.getSupportById(supportId);
+  res.status(httpStatus.OK).send({ Support });
 });
 
 const updateSupport = catchAsync(async (req, res) => {

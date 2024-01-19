@@ -4,21 +4,15 @@ const catchAsync = require('../utils/catchAsync');
 const { bookingService } = require('../services');
 
 const createBooking = catchAsync(async (req, res) => {
-  let userBody = req.body;
-  const data = await bookingService.createBooking(userBody);
-  console.log("--------------------------------------------",data)
-  if (data) {
-    await res.status(200).send({ message: 'created successfully' });
-  } else {
-    await res.status(404).send({ message: 'not created' });
-  }
+  const booking = await bookingService.createBooking(req.body);
+  res.status(httpStatus.CREATED).send({ booking });
 });
 
 const getBookingById = async (req, res) => {
   const userBody=req.body
   const data =await bookingService.getBookingById(userBody)
   if(data){
-    res.status(200).send('GET booking by ID');
+    res.status(200).send('GET booking by ID',);
   }else{
     res.status(404).send('not found');
   }
@@ -42,7 +36,8 @@ const updateBooking = async (req, res) => {
 
 const deleteBooking = async (req, res) => {
   // Implementation to delete booking by ID
-  const deletebooking = await bookingService.deleteBooking(querry);
+  const idere = req.params.bookingId;
+  const deletebooking = await bookingService.deleteBooking(idere);
   if (deletebooking) {
     res.status(httpStatus.OK).send({ message: ' deleted successfully' });
   } else {

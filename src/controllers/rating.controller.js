@@ -4,14 +4,8 @@ const catchAsync = require('../utils/catchAsync');
 const { ratingService } = require('../services');
 
 const createRating = catchAsync(async (req, res) => {
-  let userBody = req.body;
-  const data = await ratingService.createRating(userBody);
-  console.log("--------------------------------------------",data)
-  if (data) {
-    await res.status(200).send({ message: 'created successfully' });
-  } else {
-    await res.status(404).send({ message: 'not created' });
-  }
+  const ratings = await ratingService.createRating(req.body);
+  res.status(httpStatus.CREATED).send({ ratings });
 });
 
 const getRatingById = async (req, res) => {

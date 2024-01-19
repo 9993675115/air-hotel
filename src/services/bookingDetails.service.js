@@ -4,12 +4,12 @@ const bcrypt = require('bcryptjs');
 const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
-const { BookingDetail } = require('../models');
+const { BookingDetails } = require('../models');
 
-const createBookingDetail = async (_userBody) => {
+const createBookingDetails = async (_userBody) => {
   const userBody = _userBody;
   console.log("-----------",userBody)
-  return BookingDetail.create(userBody);
+  return BookingDetails.create(userBody);
 };
 const getBookingDetailById = async (bookingDetailId) => {
   try {
@@ -38,10 +38,10 @@ const updateBookingDetail = async (bookingDetailId, updatedData) => {
   }
 };
 
-const deleteBookingDetail = async (bookingDetailId) => {
+const deleteBookingDetail = async (BookingDetail) => {
   try {
     const deletedRowsCount = await BookingDetail.destroy({
-      where: { bookingDetailId: bookingDetailId }
+      where: { bookingDetailId: BookingDetail }
     });
     return deletedRowsCount;
   } catch (error) {
@@ -51,7 +51,7 @@ const deleteBookingDetail = async (bookingDetailId) => {
 };
 
 module.exports = {
-  createBookingDetail,
+  createBookingDetails,
   getBookingDetailById,
   updateBookingDetail,
   deleteBookingDetail,

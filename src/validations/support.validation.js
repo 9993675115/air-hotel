@@ -4,7 +4,7 @@ const createSupport = {
   subject: Joi.string().required(),
   title: Joi.string().required(),
   sentBy: Joi.string().required(),
-  status: Joi.string().required(),
+  status: Joi.boolean().required(),
 };
 const updateSupportValidation = {
   body: Joi.object({

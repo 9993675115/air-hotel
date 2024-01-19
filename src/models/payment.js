@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Payment = sequelize.define('Payment', {
+  const Payment = sequelize.define('Payments', {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -9,11 +9,11 @@ const { Rating } = require('../models');
 const createRating = async (_userBody) => {
   const userBody = _userBody;
   console.log("-----------",userBody)
-  return Booking.create(userBody);
+  return Rating.create(userBody);
 };
-const getRatingById = async (ratingId) => {
+const getRatingById = async () => {
   try {
-    const data = await ratingId.findAll();
+    const data = await Rating.findAll();
     return data;
   } catch (error) {
     console.error('Error retrieving users:', error);
@@ -23,7 +23,7 @@ const getRatingById = async (ratingId) => {
 
 const updateRating = async (ratingId, updatedData) => {
   try {
-    const findData = await User.findOne({
+    const findData = await Rating.findOne({
       where: { ratingId: ratingId }
     });
     if (findData) {

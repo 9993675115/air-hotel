@@ -15,6 +15,13 @@ const createBooking = {
   address: Joi.string().required(),
   status: Joi.string().required(),
 };
+const getBookingsValidation = Joi.object({
+  userId: Joi.number(),
+  roomId: Joi.number(),
+  status: Joi.string().valid('pending', 'confirmed', 'cancelled'),
+  // You can add more validation rules as needed for your specific use case
+});
+
 const updateBookingValidation = {
   body: Joi.object({
     // Define the validation schema for updating a booking
@@ -32,5 +39,6 @@ const updateBookingValidation = {
 
 module.exports = {
   createBooking,
-  updateBookingValidation
+  updateBookingValidation,
+  getBookingsValidation
 };

@@ -4,7 +4,7 @@ const createPayment = {
   userId: Joi.number().required(),
   bookingId: Joi.number().required(),
   paymentResponse: Joi.string().required(),
-  status: Joi.string().required(),
+  status: Joi.boolean().required(),
 };
 const updatePaymentValidation = {
   body: Joi.object({

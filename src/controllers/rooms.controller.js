@@ -4,14 +4,8 @@ const catchAsync = require('../utils/catchAsync');
 const { roomsService } = require('../services');
 
 const createRoom = catchAsync(async (req, res) => {
-  let userBody = req.body;
-  const data = await roomsService.createRoom(userBody);
-  console.log("--------------------------------------------",data)
-  if (data) {
-    await res.status(200).send({ message: 'created successfully' });
-  } else {
-    await res.status(404).send({ message: 'not created' });
-  }
+  const Room = await roomsService.createRoom(req.body);
+  res.status(httpStatus.CREATED).send({ Room });
 });
 const getRoomById = async (req, res) => {
   const userBody=req.body

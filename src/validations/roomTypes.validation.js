@@ -6,7 +6,7 @@ const createRoomType = {
 };
 const updateRoomTypeValidation = {
   body: Joi.object({
-    name: Joi.string(),
+    typeName: Joi.string(),
     description: Joi.string(),
     // Add more validation as needed
   }),

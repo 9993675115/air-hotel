@@ -4,8 +4,8 @@ const catchAsync = require('../utils/catchAsync');
 const { roomTypeService } = require('../services');
 
 const createRoomType = catchAsync(async (req, res) => {
-  const roomType = await roomTypeService.createRoomType(req.body);
-  res.status(httpStatus.CREATED).send({ roomType });
+  const RoomType = await roomTypeService.createRoomType(req.body);
+  res.status(httpStatus.CREATED).send({ RoomType });
 });
 const getRoomTypeById = async (req, res) => {
   // Implementation to get room type by ID

@@ -11,9 +11,9 @@ const createBooking = async (_userBody) => {
   console.log("-----------",userBody)
   return Booking.create(userBody);
 };
-const getBookingById = async (bookingId) => {
+const getBookingById = async () => {
   try {
-    const data = await bookingId.findAll();
+    const data = await Booking.findAll();
     return data;
   } catch (error) {
     console.error('Error retrieving users:', error);
@@ -23,7 +23,7 @@ const getBookingById = async (bookingId) => {
 
 const updateBooking = async (bookingId, updatedData) => {
   try {
-    const findData = await User.findOne({
+    const findData = await Booking.findOne({
       where: { bookingId: bookingId }
     });
     if (findData) {
@@ -37,10 +37,10 @@ const updateBooking = async (bookingId, updatedData) => {
     throw error;
   }};
 
-const deleteBooking = async (bookingId) => {
+const deleteBooking = async (id) => {
   try {
     const deletedRowsCount = await Booking.destroy({
-      where: { bookingId: bookingId }
+      where: { id }
     });
     return deletedRowsCount;
   } catch (error) {

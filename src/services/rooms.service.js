@@ -9,7 +9,7 @@ const { Room } = require('../models');
 const createRoom = async (_userBody) => {
   const userBody = _userBody;
   console.log("-----------",userBody)
-  return Booking.create(userBody);
+  return Room.create(userBody);
 };
 
 const getRoomById = async () => {

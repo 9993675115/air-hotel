@@ -10,10 +10,7 @@ module.exports = {
         userId: {
           allowNull: false,
           type: Sequelize.INTEGER,
-          references: {
-            model: 'Users', // Assuming you have a 'users' table
-            key: 'id'
-          }
+        
         },
         bookingId: {
           allowNull: false,
@@ -26,7 +23,7 @@ module.exports = {
         },
         status: {
           allowNull: false,
-          type: Sequelize.STRING // Adjust the data type based on your requirements
+          type: Sequelize.BOOLEAN // Adjust the data type based on your requirements
         },
         createdAt: {
           allowNull: false,
