@@ -27,3 +27,5 @@ module.exports.roomTypesValidation = require('./roomTypes.validation');
 module.exports.ratingValidation = require('./rating.validation');
 module.exports.bookingValidation = require('./booking.validation');
 module.exports.bookingDetailsValidation = require('./bookingDetails.validation');
+module.exports.hotelValidation = require('./hotel.validation');
+module.exports.categoryValidation = require('./category.validation');

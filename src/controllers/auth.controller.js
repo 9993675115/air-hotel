@@ -7,13 +7,13 @@ const { authService, tokenService, userService } = require('../services');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send({ user });
+  res.status(httpStatus.CREATED).send({ user , message:"register Successfully",});
 });
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
-  res.send({ user, tokens });
+  res.send({ user, tokens,message:"login successfully", });
 });
 
 const logout = catchAsync(async (req, res) => {

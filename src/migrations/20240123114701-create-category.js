@@ -1,28 +1,31 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
-      return queryInterface.createTable('supportdetails', {
+      return queryInterface.createTable('Categories', {
         id: {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        supportId: {
+        name: {
           allowNull: false,
-          type: Sequelize.INTEGER,
-          
+          type: Sequelize.STRING
         },
-        description: {
+        image: {
           allowNull: false,
-          type: Sequelize.TEXT
+          type: Sequelize.STRING
         },
-        sentBy: {
-          allowNull: false,
+        isActive: {
+          allowNull: true,
+          type: Sequelize.BOOLEAN
+        },
+        icon: {
+          allowNull: true,
           type: Sequelize.STRING
         },
         status: {
           allowNull: false,
-          type: Sequelize.BOOLEAN // Adjust the data type based on your requirements
+          type: Sequelize.BOOLEAN
         },
         createdAt: {
           allowNull: false,
@@ -34,8 +37,9 @@ module.exports = {
         }
       });
     },
+  
     down: (queryInterface) => {
-      return queryInterface.dropTable('supportdetails');
+      return queryInterface.dropTable('Categories');
     }
   };
   

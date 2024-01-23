@@ -9,30 +9,49 @@ const createBooking = catchAsync(async (req, res) => {
 });
 
 const getBookingById = async (req, res) => {
-  const userBody=req.body
-  const data =await bookingService.getBookingById(userBody)
-  if(data){
-    res.status(200).send('GET booking by ID',);
-  }else{
-    res.status(404).send('not found');
+  try {
+    const { bookingId } = req.params; // Assuming bookingId is in req.params
+
+    const data = await bookingService.getBookingById(bookingId);
+
+    if (data) {
+      res.status(200).send({ data, message: 'GET booking by ID' });
+    } else {
+      res.status(404).send({ message: 'Not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error fetching booking by ID:', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 };
+const getAllBooking = catchAsync(async (req, res) => {
+  const bookings = await bookingService.getAllBooking();
+  res.status(httpStatus.OK).json(bookings);
+});
+
+
 
 const updateBooking = async (req, res) => {
   try {
-    const bookingId = req.params;
+    // Extracting bookingId from req.params
+    const { bookingId } = req.params;
+
+    // Assuming you have validated your req.body using Joi or other validation middleware
     const updatedData = req.body;
-    const updatedbooking = await bookingService.updateBooking(bookingId, updatedData);
-    if (updatedbooking) {
-      res.status(200).send({ data: updatedData, message: ' updated successfully' });
+
+    const updateBooking = await bookingService.updateBooking(bookingId, updatedData);
+
+    if (updateBooking) {
+      res.status(200).send({ data: updatedData, message: 'Updated successfully' });
     } else {
-      res.status(404).send({ message:' not found', status: 0 });
+      res.status(404).send({ message: 'Not found', status: 0 });
     }
   } catch (error) {
     console.error('Error updating :', error);
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 };
+
 
 const deleteBooking = async (req, res) => {
   // Implementation to delete booking by ID
@@ -49,6 +68,7 @@ module.exports = {
   createBooking,
   getBookingById,
   updateBooking,
-  deleteBooking
+  deleteBooking,
+  getAllBooking
   // Add more controller methods as needed
 };

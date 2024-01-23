@@ -26,8 +26,8 @@ const updateBookingValidation = {
   body: Joi.object({
     // Define the validation schema for updating a booking
     // Example:
-    userId: Joi.string(),
-    roomId: Joi.string(),
+    userId: Joi.number(),
+    roomId: Joi.number(),
     checkInDate: Joi.date().iso(),
     checkOutDate: Joi.date().iso(),
     // Add more validation as needed

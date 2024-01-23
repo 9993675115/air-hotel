@@ -11,7 +11,7 @@ const createPayment = async (_userBody) => {
   console.log("-----------",userBody)
   return Payments.create(userBody);
 };
-const getPaymentById = async () => {
+const getAllPayment = async () => {
   try {
     const data = await Payments.findAll();
     return data;
@@ -20,6 +20,15 @@ const getPaymentById = async () => {
     throw error;
   }
 };
+const getPaymentById = async () => {
+  try {
+    const data = await Payments.findAll();
+    return data;
+  } catch (error) {
+    console.error('Error retrieving users:', error);
+    throw error;
+  }
+}
 
 const updatePayment = async (paymentId, updatedData) => {
   try {
@@ -27,7 +36,7 @@ const updatePayment = async (paymentId, updatedData) => {
       where: { paymentId: paymentId }
     });
     if (findData) {
-      await Payment.update(updatedData, { where: { paymentId: paymentId } });
+      await Payments.update(updatedData, { where: { paymentId: paymentId } });
       return true;
     } else {
       return false;
@@ -52,8 +61,9 @@ const deletePayment = async (paymentId) => {
 
 module.exports = {
   createPayment,
-  getPaymentById,
+  getAllPayment,
   updatePayment,
   deletePayment,
+  getPaymentById
   // Add more service methods as needed
 };

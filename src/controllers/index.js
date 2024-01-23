@@ -9,5 +9,7 @@ module.exports.roomTypesController = require('./roomTypes.controller');
 module.exports.ratingController = require('./rating.controller');
 module.exports.addressController = require('./address.controller');
 module.exports.paymentController = require('./payment.controller');
+module.exports.hotelController = require('./hotel.controller');
+module.exports.categoryController = require('./category.controller');
 
 

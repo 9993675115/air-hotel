@@ -9,7 +9,7 @@ const { RoomType } = require('../models');
 const createRoomType = async (_userBody) => {
   const userBody = _userBody;
   console.log("-----------",userBody)
-  return Booking.create(userBody);
+  return RoomType.create(userBody);
 };
 const getRoomTypeById = async (roomTypeId) => {
   const roomType = await RoomType.findByPk(roomTypeId);

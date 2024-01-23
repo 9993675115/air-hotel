@@ -12,15 +12,25 @@ const createRoom = async (_userBody) => {
   return Room.create(userBody);
 };
 
-const getRoomById = async () => {
+const getRoomById = async (roomId) => {
   try {
-    const data = await Room.findAll();
-    return data;
+    const room = await Room.findByPk(roomId);
+    return room;
   } catch (error) {
-    console.error('Error retrieving users:', error);
+    console.error('Error fetching room by ID:', error);
     throw error;
   }
 };
+const getAllRoom = async () => {
+  try {
+    const room = await Room.findAll();
+    return room;
+  } catch (error) {
+    console.error('Error getting all room:', error);
+    throw error;
+  }
+};
+
 
 const updateRoom = async (roomId, updatedData) => {
   try {
@@ -41,19 +51,27 @@ const updateRoom = async (roomId, updatedData) => {
 
 const deleteRoom = async (roomId) => {
   try {
-    const deletedRowsCount = await Room.destroy({
-      where: { roomId: roomId }
+    if (!roomId) {
+      throw new Error('roomId is required for deletion.');
+    }
+
+    const deletedRowsCount = await Room.update({ status: false }, {
+      where: { id: roomId }
     });
+
     return deletedRowsCount;
   } catch (error) {
-    console.error('Error deleting user by id:', error);
+    console.error('Error deleting room by id:', error);
     throw error;
   }
 };
+
+
 module.exports = {
   createRoom,
   getRoomById,
   updateRoom,
   deleteRoom,
+  getAllRoom
   // Add more service methods as needed
 };

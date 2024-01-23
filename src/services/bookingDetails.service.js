@@ -11,49 +11,74 @@ const createBookingDetails = async (_userBody) => {
   console.log("-----------",userBody)
   return BookingDetails.create(userBody);
 };
-const getBookingDetailById = async (bookingDetailId) => {
+const getBookingDetailById = async (id) => {
   try {
-    const data = await bookingDetailId.findAll();
-    return data;
+    const bookingDetail = await BookingDetails.findByPk(id);
+
+    if (!bookingDetail) {
+      // Handle the case where the booking detail is not found
+      return null;
+    }
+
+    return bookingDetail;
   } catch (error) {
-    console.error('Error retrieving users:', error);
+    console.error('Error fetching booking detail by ID:', error);
+    throw error;
+  }
+};
+const getAllBookingDetails = async () => {
+  try {
+    const bookingDetails = await BookingDetails.findAll();
+    return bookingDetails;
+  } catch (error) {
+    console.error('Error getting all booking details:', error);
     throw error;
   }
 };
 
 const updateBookingDetail = async (bookingDetailId, updatedData) => {
   try {
-    const findData = await User.findOne({
-      where: { bookingDetailId: bookingDetailId }
-    });
-    if (findData) {
-      await Booking.update(updatedData, { where: { bookingDetailId: bookingDetailId } });
-      return true;
-    } else {
-      return false;
+    const bookingDetail = await BookingDetails.findByPk(bookingDetailId);
+
+    if (!bookingDetail) {
+      // Handle the case where the booking detail is not found
+      return null;
     }
+
+    // Update the fields based on the provided `updatedData`
+    const updatedBookingDetail = await bookingDetail.update(updatedData);
+
+    return updatedBookingDetail;
   } catch (error) {
-    console.error('Error updating user by id:', error);
+    console.error('Error updating booking detail by id:', error);
     throw error;
   }
 };
 
-const deleteBookingDetail = async (BookingDetail) => {
+
+const deleteBookingDetail = async (bookingDetailId) => {
   try {
-    const deletedRowsCount = await BookingDetail.destroy({
-      where: { bookingDetailId: BookingDetail }
+    if (!bookingDetailId) {
+      throw new Error('Booking detail ID is required for deletion.');
+    }
+
+    const deletedRowsCount = await BookingDetails.update({status:false},{
+      where: { id: bookingDetailId }
     });
+
     return deletedRowsCount;
   } catch (error) {
-    console.error('Error deleting user by id:', error);
+    console.error('Error deleting booking detail by id:', error);
     throw error;
   }
 };
+
 
 module.exports = {
   createBookingDetails,
   getBookingDetailById,
   updateBookingDetail,
   deleteBookingDetail,
+  getAllBookingDetails
   // Add more service methods as needed
 };

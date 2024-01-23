@@ -3,10 +3,10 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const { roomTypeService } = require('../services');
 
-const createRoomType = catchAsync(async (req, res) => {
+const createRoomType = async (req, res) => {
   const RoomType = await roomTypeService.createRoomType(req.body);
   res.status(httpStatus.CREATED).send({ RoomType });
-});
+};
 const getRoomTypeById = async (req, res) => {
   // Implementation to get room type by ID
   res.status(200).send('GET Room Type by ID');

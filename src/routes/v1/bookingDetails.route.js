@@ -9,7 +9,9 @@ router.post('/createBookingDetail', validate(bookingDetailValidation.createBooki
 // Add more routes as needed
 
 // GET /api/bookingDetails/:bookingDetailId
-router.get('/:bookingDetailId', bookingDetailController.getBookingDetailById);
+router.get('/:bookingDetailId', validate(bookingDetailValidation.getBookingDetailsValidation),bookingDetailController.getBookingDetailById);
+
+router.get('/', bookingDetailController.getAllBookingDetail);
 
 // PUT /api/bookingDetails/:bookingDetailId
 router.put('/:bookingDetailId', validate(bookingDetailValidation.updateBookingDetailValidation), bookingDetailController.updateBookingDetail);

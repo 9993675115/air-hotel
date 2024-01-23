@@ -10,6 +10,8 @@ const roomTypesRoute = require('./roomTypes.route')
 const paymentRoute = require('./payment.route')
 const addressRoute = require('./address.route')
 const ratingRoute = require('./rating.route')
+const hotelRoute = require('./hotel.route')
+const categoryRoute = require('./category.route')
 const router = express.Router();
 
 const defaultRoutes = [
@@ -56,6 +58,14 @@ const defaultRoutes = [
     path: '/rating',
     route: ratingRoute
   },
+  {
+    path: '/hotel',
+    route: hotelRoute
+  },{
+    path: '/category',
+    route: categoryRoute
+  },
+
 
 ];
 

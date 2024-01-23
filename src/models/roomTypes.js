@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const RoomType = sequelize.define('RoomTypes', {
+  const RoomType = sequelize.define('RoomType', {
     typeName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
     },
   },
   {
-    tableName: 'RoomType',
+    tableName: 'RoomTypes',
     freezeTableName: true
   }
 );

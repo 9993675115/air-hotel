@@ -2,22 +2,76 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   const Room = sequelize.define('Room', {
-    userId: {
-      type: DataTypes.INTEGER,
+    id: {
       allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    userId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
     },
     roomNumber: {
-      type: DataTypes.STRING,
       allowNull: false,
+      type: DataTypes.STRING
     },
     roomTypeId: {
-      type: DataTypes.INTEGER,
       allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    extraMattress: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN
+    },
+    extraMattressCharge: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    perNightCharge: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    monthlyCharge: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    weeklyCharge: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    numberOfGuest: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    numberOfChildren: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    description: {
+      allowNull: false,
+      type: DataTypes.TEXT
+    },
+    selectAmenities: {
+      allowNull: false,
+      type: DataTypes.ARRAY(DataTypes.STRING)
+    },
+    image: {
+      allowNull: false,
+      type: DataTypes.JSON
     },
     status: {
-      type: DataTypes.STRING,
       allowNull: false,
+      type: DataTypes.BOOLEAN
     },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    }
   },
   {
     tableName: 'Rooms',

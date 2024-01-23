@@ -1,21 +1,52 @@
 const Joi = require('joi');
 
-const createRoom = {
+const createRoomSchema = {
   userId: Joi.number().required(),
-  roomNumber: Joi.number().required(),
-  roomTypeId: Joi.string().required(),
+  roomNumber: Joi.string().required(),
+  roomTypeId: Joi.number().required(),
+  extraMattress: Joi.boolean().required(),
+  extraMattressCharge: Joi.number().required(),
+  perNightCharge: Joi.number().required(),
+  monthlyCharge: Joi.number().required(),
+  weeklyCharge: Joi.number().required(),
+  numberOfGuest: Joi.number().required(),
+  numberOfChildren: Joi.number().required(),
+  description: Joi.string().required(),
+  selectAmenities: Joi.array().items(Joi.string()).required(),
+  image: Joi.object().required(), // You might need to refine this based on the actual structure of the image
   status: Joi.boolean().required(),
 };
-const updateRoomValidation = {
+const getRoomByIdValidationSchema = {
+  params: Joi.object({
+    bookingId: Joi.number().required(),
+  }),
+};
+
+const updateRoomValidationSchema = {
   body: Joi.object({
-    name: Joi.string(),
+    userId: Joi.number(),
+    roomNumber: Joi.string(),
+    roomTypeId: Joi.number(),
+    extraMattress: Joi.boolean(),
+    extraMattressCharge: Joi.number(),
+    perNightCharge: Joi.number(),
+    monthlyCharge: Joi.number(),
+    weeklyCharge: Joi.number(),
+    numberOfGuest: Joi.number(),
+    numberOfChildren: Joi.number(),
+    description: Joi.string(),
+    selectAmenities: Joi.array().items(Joi.string()),
+    image: Joi.object(), // You might need to refine this based on the actual structure of the image
+    status: Joi.boolean(),
     // Add more validation as needed
   }),
   params: Joi.object({
-    roomId: Joi.string().required(),
+    roomId: Joi.number().required(),
   }),
 };
+
 module.exports = {
-  createRoom,
-  updateRoomValidation
+  createRoomSchema,
+  updateRoomValidationSchema,
+  getRoomByIdValidationSchema
 };

@@ -11,6 +11,8 @@ router.post('/createBooking', validate(bookingValidation.createBooking), booking
 // GET /api/bookings/:bookingId
 router.get('/:bookingId', validate(bookingValidation.getBookingsValidation),bookingController.getBookingById);
 
+router.get('/', bookingController.getAllBooking);
+
 // PUT /api/bookings/:bookingId
 router.put('/:bookingId', validate(bookingValidation.updateBookingValidation), bookingController.updateBooking);
 

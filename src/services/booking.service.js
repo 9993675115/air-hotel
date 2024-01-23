@@ -20,26 +20,26 @@ const getBookingById = async () => {
     throw error;
   }
 };
+const getAllBooking = async () => {
+  try {
+    const bookings = await Booking.findAll();
+    return bookings;
+  } catch (error) {
+    console.error('Error getting all bookings:', error);
+    throw error;
+  }
+};
 
 const updateBooking = async (bookingId, updatedData) => {
-  try {
-    const findData = await Booking.findOne({
-      where: { bookingId: bookingId }
-    });
-    if (findData) {
-      await Booking.update(updatedData, { where: { bookingId: bookingId } });
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error('Error updating user by id:', error);
-    throw error;
-  }};
+  // Correct the column name to "id"
+  const booking = await Booking.update(updatedData, { where: { id: bookingId } });
+  return booking;
+};
+
 
 const deleteBooking = async (id) => {
   try {
-    const deletedRowsCount = await Booking.destroy({
+    const deletedRowsCount = await Booking.update({status:false},{
       where: { id }
     });
     return deletedRowsCount;
@@ -55,5 +55,6 @@ module.exports = {
   getBookingById,
   updateBooking,
   deleteBooking,
+  getAllBooking
   // Add more service methods as needed
 };

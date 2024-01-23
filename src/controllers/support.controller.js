@@ -17,7 +17,7 @@ const getSupportById = catchAsync(async (req, res) => {
 const updateSupport = catchAsync(async (req, res) => {
   const { supportId } = req.params;
   const updatedSupport = await supportService.updateSupport(supportId, req.body);
-  res.status(httpStatus.OK).send({ support: updatedSupport });
+  res.status(httpStatus.OK).send({ Support: updatedSupport });
 });
 
 const deleteSupport = catchAsync(async (req, res) => {

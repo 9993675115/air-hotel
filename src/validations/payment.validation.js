@@ -6,6 +6,11 @@ const createPayment = {
   paymentResponse: Joi.string().required(),
   status: Joi.boolean().required(),
 };
+const getPaymentValidation = {
+  params: Joi.object({
+    paymentId: Joi.number().required(),
+  }),
+};
 const updatePaymentValidation = {
   body: Joi.object({
     amount: Joi.number(),
@@ -18,5 +23,6 @@ const updatePaymentValidation = {
 
 module.exports = {
   createPayment,
+  getPaymentValidation,
   updatePaymentValidation
 };

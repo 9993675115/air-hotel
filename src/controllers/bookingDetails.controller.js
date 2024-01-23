@@ -8,24 +8,45 @@ const createBookingDetail = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send({ BookingDetail });
 });
 const getBookingDetailById = async (req, res) => {
-  const userBody=req.body
-  const data =await bookingDetailsService.bookingDetailsService.getBookingDetailById(userBody)
-  if(data){
-    res.status(200).send('GET booking by ID');
-  }else{
-    res.status(404).send('not found');
+  try {
+    const { bookingDetailId } = req.params;
+
+    const bookingDetail = await bookingDetailsService.bookingDetailsService.getBookingDetailById(bookingDetailId);
+
+    if (bookingDetail) {
+      res.status(200).send({ data: bookingDetail, message: 'GET booking detail by ID' });
+    } else {
+      res.status(404).send({ message: 'Booking detail not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error fetching booking detail by ID:', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
+  }
+};
+const getAllBookingDetail = async (req, res) => {
+  try {
+    const bookingDetails = await bookingDetailsService.bookingDetailsService.getAllBookingDetails();
+    res.status(httpStatus.OK).json(bookingDetails);
+  } catch (error) {
+    console.error('Error getting all booking details:', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
   }
 };
 
 const updateBookingDetail = async (req, res) => {
   try {
-    const bookingDetailId = req.params;
+    // Extracting bookingId from req.params
+    const { bookingDetailId } = req.params;
+
+    // Assuming you have validated your req.body using Joi or other validation middleware
     const updatedData = req.body;
-    const updateBookingDetailbooking = await bookingDetailsService.bookingDetailsService.updateBookingDetail(bookingDetailId, updatedData);
-    if (updateBookingDetailbooking) {
-      res.status(200).send({ data: updatedData, message: ' updated successfully' });
+
+    const updateBookingDetail = await bookingDetailsService.bookingDetailsService.updateBookingDetail(bookingDetailId, updatedData);
+
+    if (updateBookingDetail) {
+      res.status(200).send({ data: updatedData, message: 'Updated successfully' });
     } else {
-      res.status(404).send({ message:' not found', status: 0 });
+      res.status(404).send({ message: 'Not found', status: 0 });
     }
   } catch (error) {
     console.error('Error updating :', error);
@@ -34,8 +55,8 @@ const updateBookingDetail = async (req, res) => {
 };
 
 const deleteBookingDetail = async (req, res) => {
-  const querry = req.params;
-  const deleteBookingDetail = await bookingDetailsService.bookingDetailsService.deleteBookingDetail(querry);
+  const id = req.params.id;
+  const deleteBookingDetail = await bookingDetailsService.bookingDetailsService.deleteBookingDetail(id);
   if (deleteBookingDetail) {
     res.status(httpStatus.OK).send({ message: ' deleted successfully' });
   } else {
@@ -48,5 +69,6 @@ module.exports = {
   getBookingDetailById,
   updateBookingDetail,
   deleteBookingDetail,
+  getAllBookingDetail
   // Add more controller methods as needed
 };

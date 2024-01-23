@@ -1,55 +1,38 @@
+// validators/categoryValidator.js
 const Joi = require('joi');
 
-const createCategory = {
-  body: Joi.object().keys({
-    categoryCode: Joi.string().required(),
-    categoryDesc: Joi.string().required(),
-    status: Joi.bool(),
-    inMdm: Joi.bool(),
-    xStoreCode: Joi.string()
-  })
+const createCategorySchema = {
+  name: Joi.string().required(),
+  image: Joi.string().required(),
+  isActive: Joi.boolean(),
+  icon: Joi.string(),
+  status: Joi.boolean(),
 };
 
-const getAllCategories = {
-  query: Joi.object().keys({
-    categoryCode: Joi.string(),
-    categoryDesc: Joi.string(),
-    status: Joi.bool(),
-    inMdm: Joi.bool(),
-    xStoreCode: Joi.string()
-  })
-};
+const updateCategorySchema = Joi.object({
+  name: Joi.string(),
+  image: Joi.string(),
+  isActive: Joi.boolean(),
+  categoryIcon: Joi.string(),
+  status: Joi.boolean(),
+});
 
-const getCategory = {
-  params: Joi.object().keys({
-    categoryId: Joi.number().required()
-  })
-};
+const getCategorySchema = Joi.object({
+  categoryName: Joi.string(),
+  image: Joi.string(),
+  isActive: Joi.boolean(),
+  categoryIcon: Joi.string(),
+  status: Joi.boolean(),
+  // You can add more validation rules as needed for your specific use case
+});
 
-const updateCategory = {
-  params: Joi.object().keys({
-    categoryId: Joi.number().required()
-  }),
-  body: Joi.object()
-    .keys({
-      categoryCode: Joi.string(),
-      categoryDesc: Joi.string(),
-      status: Joi.bool(),
-      inMdm: Joi.bool(),
-      xStoreCode: Joi.string()
-    })
-    .min(1)
-};
-const deleteCategory = {
-  params: Joi.object().keys({
-    categoryId: Joi.number().required()
-  })
-};
+const categoryIdSchema = Joi.object({
+  categoryId: Joi.number().integer().required(),
+});
 
 module.exports = {
-  createCategory,
-  getAllCategories,
-  getCategory,
-  updateCategory,
-  deleteCategory
+  createCategorySchema,
+  updateCategorySchema,
+  getCategorySchema,
+  categoryIdSchema,
 };

@@ -10,7 +10,7 @@ router.post('/createRoomType', validate(roomTypeValidation.createRoomType), room
 router.get('/:roomTypeId', roomTypeController.getRoomTypeById);
 
 // PUT /api/roomTypes/:roomTypeId
-router.put('/:roomTypeId', validate(roomTypeValidation.updateRoomType), roomTypeController.updateRoomType);
+router.put('/:roomTypeId', validate(roomTypeValidation.updateRoomTypeValidation), roomTypeController.updateRoomType);
 
 // DELETE /api/roomTypes/:roomTypeId
 router.delete('/:roomTypeId', roomTypeController.deleteRoomType);

@@ -8,14 +8,25 @@ const createPayment = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send({ Payment });
 });
 const getPaymentById = async (req, res) => {
-  const userBody=req.body
-  const data =await paymentService.getPaymentById(userBody)
-  if(data){
-    res.status(200).send('GET booking by ID',data);
-  }else{
-    res.status(404).send('not found');
+  try {
+    const { paymentId } = req.params; // Assuming bookingId is in req.params
+
+    const data = await paymentService.getPaymentById(paymentId);
+
+    if (data) {
+      res.status(200).send({ data, message: 'GET payment by ID' });
+    } else {
+      res.status(404).send({ message: 'Not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error fetching payment by ID:', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
   }
   };
+  const getAllPayment = catchAsync(async (req, res) => {
+    const Payment = await paymentService.getAllPayment();
+    res.status(httpStatus.OK).json(Payment);
+  })
   
   const updatePayment = async (req, res) => {
     try {
@@ -48,5 +59,6 @@ module.exports = {
   getPaymentById,
   updatePayment,
   deletePayment,
+  getAllPayment
   // Add more controller methods as needed
 };

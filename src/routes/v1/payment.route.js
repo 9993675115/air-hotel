@@ -9,7 +9,9 @@ router.post('/createPayment', validate(paymentValidation.createPayment), payment
 // Add more routes as needed
 
 // GET /api/payments/:paymentId
-router.get('/:paymentId', paymentController.getPaymentById);
+router.post('/:paymentId', validate(paymentValidation.getPaymentValidation), paymentController.getPaymentById);
+
+router.get('/', paymentController.getAllPayment);
 
 // PUT /api/payments/:paymentId
 router.put('/:paymentId', validate(paymentValidation.updatePayment), paymentController.updatePayment);

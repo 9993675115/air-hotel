@@ -1,8 +1,14 @@
 const Joi = require('joi');
 
 const createRoomType = {
-  typeName: Joi.string().required(),
-  description: Joi.string().required(),
+  body: Joi.object({
+    typeName: Joi.string(),
+    description: Joi.string(),
+    // Add more validation as needed
+  }),
+  params: Joi.object({
+    roomTypeId: Joi.string(),
+  }),
 };
 const updateRoomTypeValidation = {
   body: Joi.object({
@@ -11,7 +17,7 @@ const updateRoomTypeValidation = {
     // Add more validation as needed
   }),
   params: Joi.object({
-    roomTypeId: Joi.string().required(),
+    roomTypeId: Joi.string(),
   }),
 };
 
