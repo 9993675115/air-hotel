@@ -7,7 +7,10 @@ const router = express.Router();
 
 router.post('/createRoomType', validate(roomTypeValidation.createRoomType), roomTypeController.createRoomType);
 // Add more routes as needed
-router.get('/:roomTypeId', roomTypeController.getRoomTypeById);
+
+router.get('/:roomTypeId', validate(roomTypeValidation.getRoomTypeValidation), roomTypeController.getRoomTypeById);
+
+router.get('/', roomTypeController.getRoomTypeAll);
 
 // PUT /api/roomTypes/:roomTypeId
 router.put('/:roomTypeId', validate(roomTypeValidation.updateRoomTypeValidation), roomTypeController.updateRoomType);

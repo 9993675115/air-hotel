@@ -30,11 +30,16 @@ const generatePassword = catchAsync(async (req, res) => {
   const password = await bcrypt.hash(req.query.password, 8);
   res.send({ password });
 });
+const getAllUser = catchAsync(async (req, res) => {
+  const data = await userService.getAllUser();
+  res.send({ data });
+});
 
 module.exports = {
   register,
   login,
   logout,
   refreshTokens,
-  generatePassword
+  generatePassword,
+  getAllUser
 };

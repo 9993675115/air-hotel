@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
-const { User, Shop, ShopParam, ApplicationLanguage } = require('../models');
+const { User, Shop, ShopParam, ApplicationLanguage, Booking } = require('../models');
 const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
@@ -46,6 +46,12 @@ const updateUserById = async (req) => {
   return User.update( { settings: parsedSett },
   { where: { id: userId } });
 };
+const getAllUser = async () => {
+  return User.findAll({
+    where: {  status: true },
+     include:  Booking 
+  });
+};
 
 module.exports = {
   createUser,
@@ -53,5 +59,6 @@ module.exports = {
   getUserByEmail,
   getUserWithSecretFields,
   getUserWithSecretFieldsById,
-  updateUserById
+  updateUserById,
+  getAllUser
 };

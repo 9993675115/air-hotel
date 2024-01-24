@@ -25,13 +25,18 @@ const createCategory = async (_userBody) => {
  
   const getAllCategories = async () => {
     try {
-      const categorys = await Category.findAll();
-      return categorys;
+      const categories = await Category.findAll({
+        where: {
+          status: true
+        }
+      });
+      return categories;
     } catch (error) {
-      console.error('Error getting all hotels:', error);
+      console.error('Error getting categories with status true:', error);
       throw error;
     }
   };
+  
   const getCategoryById = async (categoryId) => {
     try {
       const categorys = await Category.findByPk(categoryId);
@@ -41,29 +46,41 @@ const createCategory = async (_userBody) => {
       throw error;
     }
   };
-  const updateCategory = async (categoryId, categoryData) => {
-    const category = await Category.findByPk(categoryId);
-    if (!category) {
+  const updateCategory = async (categoryId, updateData) => {
+    // Ensure updateData is not empty before updating
+    if (Object.keys(updateData).length === 0) {
+      throw new Error('Update data cannot be empty');
+    }
+  
+    // Validate that the category with the given ID exists
+    const existingCategory = await Category.findByPk(categoryId);
+    if (!existingCategory) {
       throw new Error('Category not found');
     }
-    await category.update(categoryData);
-    return category;
+  
+    // Perform the update
+    await Category.update(updateData, { where: { id: categoryId } });
+  
+    // Fetch and return the updated category after the update operation
+    const updatedCategory = await Category.findByPk(categoryId);
+    return updatedCategory;
   };
+  
+  
   const deleteCategory = async (id) => {
     try {
-      const deletedRowsCount = await Category.update({status:false},{
-        where: { id }
-      });
-      return deletedRowsCount;
+      const [affectedRowsCount, affectedRows] = await Category.update(
+        { status: false },
+        { where: { id } }
+      );
+      
+      return affectedRowsCount;
+
     } catch (error) {
       console.error('Error deleting category by id:', error);
       throw error;
     }
   };
-  
-  
-  
-  
   
  
   module.exports = {

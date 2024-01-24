@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const SupportDetail = sequelize.define('supportdetails', {
+  const SupportDetail = sequelize.define('Supportdetail', {
     supportId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
     },
   },
   {
-    tableName: 'supportdetails',
+    tableName: 'Supportdetails',
     freezeTableName: true
   }
   );

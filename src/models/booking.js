@@ -40,8 +40,6 @@ module.exports = (sequelize) => {
     },
     userId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
     },
     roomId: {
       type: DataTypes.INTEGER,
@@ -57,12 +55,23 @@ module.exports = (sequelize) => {
     },
   },
   {
-    tableName: 'booking',
+    tableName: 'Bookings',
     freezeTableName: true
   }
 );
 
-  // Add associations if needed
+Booking.associate = function(models) {
+  Booking.belongsTo(models.User, {
+      foreignKey: 'userId',
+      // onDelete: 'CASCADE'
+  });
+};
 
+Booking.associate = function(models) {
+  Booking.belongsTo(models.Room, {
+      foreignKey: 'id',
+      // onDelete: 'CASCADE'
+  });
+};
   return Booking;
 };

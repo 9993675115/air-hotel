@@ -23,7 +23,11 @@ const getRoomById = async (roomId) => {
 };
 const getAllRoom = async () => {
   try {
-    const room = await Room.findAll();
+    const room = await Room.findAll({
+      where: {
+        status: true
+      }
+    });
     return room;
   } catch (error) {
     console.error('Error getting all room:', error);
@@ -32,22 +36,25 @@ const getAllRoom = async () => {
 };
 
 
-const updateRoom = async (roomId, updatedData) => {
+const updateRoom = async (roomId, updateData) => {
   try {
-    const findData = await User.findOne({
-      where: { roomId: roomId }
+    const data = await Room.update(updateData, {
+      where: { id: roomId },
+      returning: true,
+      // plain: true,
     });
-    if (findData) {
-      await Booking.update(updatedData, { where: { roomId: roomId } });
-      return true;
+
+    if (data) {
+      return data;
     } else {
-      return false;
+      throw new Error('Room not found');
     }
   } catch (error) {
-    console.error('Error updating user by id:', error);
+    console.error('Error updating room in service:', error);
     throw error;
   }
 };
+
 
 const deleteRoom = async (roomId) => {
   try {

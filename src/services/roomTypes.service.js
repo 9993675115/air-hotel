@@ -12,9 +12,35 @@ const createRoomType = async (_userBody) => {
   return RoomType.create(userBody);
 };
 const getRoomTypeById = async (roomTypeId) => {
-  const roomType = await RoomType.findByPk(roomTypeId);
-  return roomType;
+  try {
+    // Fetch the room type by ID from the database
+    const roomType = await RoomType.findByPk(roomTypeId);
+
+    if (!roomType) {
+      // If room type is not found, return null or throw an error
+      return null;
+    }
+
+    return roomType;
+  } catch (error) {
+    console.error('Error fetching room by ID:', error);
+    throw error;
+  }
 };
+const getRoomTypeAll = async () => {
+  try {
+    // Fetch all room types from the database
+    const roomTypes = await RoomType.findAll({ where: { status: true } });
+
+    // Return the result
+    return roomTypes;
+  } catch (error) {
+    // Handle errors (you can log or throw an error)
+    console.error('Error getting all room types:', error);
+    throw error;
+  }
+};
+
 
 const updateRoomType = async (roomTypeId, updatedData) => {
   const roomType = await RoomType.findByPk(roomTypeId);
@@ -40,5 +66,6 @@ module.exports = {
   getRoomTypeById,
   updateRoomType,
   deleteRoomType,
+  getRoomTypeAll
   // Add more service methods as needed
 };

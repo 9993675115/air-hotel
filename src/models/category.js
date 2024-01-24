@@ -28,5 +28,16 @@ const Category = sequelize.define('Category', {
   freezeTableName: true
 });
 
+
+
+Category.associate = function(models) {
+  Category.hasOne(models.Hotel, {
+      foreignKey: 'id',
+      as: 'categoryId'
+  });
+};
+
+// Category.hasMany(Hotel, { foreignKey: 'Category', as: 'Hotel' });
+
 return Category;
 }

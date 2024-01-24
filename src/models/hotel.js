@@ -19,6 +19,18 @@ const Hotel = sequelize.define('Hotel', {
     allowNull: false,
     type: DataTypes.STRING
   },
+  name: {
+    allowNull: false,
+    type: DataTypes.STRING
+  },
+  categoryId: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Category', // Assuming your Category model name is 'Category' and table name is 'Categories'
+      key: 'id'
+    } // Adjust the data type based on your requirements
+  },
   state: {
     allowNull: false,
     type: DataTypes.STRING
@@ -29,7 +41,7 @@ const Hotel = sequelize.define('Hotel', {
   },
   pincode: {
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.INTEGER
   },
   distanceFromAirport: {
     allowNull: false,
@@ -67,10 +79,10 @@ const Hotel = sequelize.define('Hotel', {
     allowNull: false,
     type: DataTypes.ARRAY(DataTypes.STRING)
   },
-
-  // ... (other existing columns)
-
-  // Timestamps
+  status: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE
@@ -80,8 +92,25 @@ const Hotel = sequelize.define('Hotel', {
     type: DataTypes.DATE
   }
   }, {
-    tableName: 'hotels',
+    tableName: 'Hotels',
     freezeTableName: true
   });
+
+  
+
+Hotel.associate = function(models) {
+  Hotel.belongsTo(models.Category, {
+      foreignKey: 'id',
+      // onDelete: 'CASCADE'
+  });
+};
+Hotel.associate = function(models) {
+  Hotel.hasOne(models.Room, {
+      foreignKey: 'id',
+      as: 'hotelId'
+  });
+};
+
+  // Hotel.belongsTo(Category, { foreignKey: 'Category', as: 'Category' });
   return Hotel;
 }

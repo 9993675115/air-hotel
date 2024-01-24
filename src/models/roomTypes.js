@@ -10,6 +10,18 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    status: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    }
   },
   {
     tableName: 'RoomTypes',

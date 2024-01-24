@@ -14,7 +14,8 @@ const createRoomSchema = {
   description: Joi.string().required(),
   selectAmenities: Joi.array().items(Joi.string()).required(),
   image: Joi.object().required(), // You might need to refine this based on the actual structure of the image
-  status: Joi.boolean().required(),
+  status: Joi.boolean(),
+  hotelId:Joi.number(),
 };
 const getRoomByIdValidationSchema = {
   params: Joi.object({
@@ -25,7 +26,7 @@ const getRoomByIdValidationSchema = {
 const updateRoomValidationSchema = {
   body: Joi.object({
     userId: Joi.number(),
-    roomNumber: Joi.string(),
+    roomNumber: Joi.number(),
     roomTypeId: Joi.number(),
     extraMattress: Joi.boolean(),
     extraMattressCharge: Joi.number(),
@@ -38,11 +39,12 @@ const updateRoomValidationSchema = {
     selectAmenities: Joi.array().items(Joi.string()),
     image: Joi.object(), // You might need to refine this based on the actual structure of the image
     status: Joi.boolean(),
+    hotelId:Joi.number(),
     // Add more validation as needed
+    roomId: Joi.number()
   }),
-  params: Joi.object({
-    roomId: Joi.number().required(),
-  }),
+  // params: Joi.object({
+  // }),
 };
 
 module.exports = {

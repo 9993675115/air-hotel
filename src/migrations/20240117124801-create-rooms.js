@@ -12,9 +12,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
+      hotelId: {  // Add this foreign key
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       roomNumber: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       roomTypeId: {
         allowNull: false,

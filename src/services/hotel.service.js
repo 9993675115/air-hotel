@@ -6,22 +6,23 @@ const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 const  {Hotel} = require('../models');
 
-const createHotel = async (_userBody) => {
-    const userBody = _userBody;
-    console.log("-----------",userBody)
-    try {
-      const result =  await Hotel.create(userBody);
-      console.log(result)
-      return result;
-    } catch (error) {
-      console.log(error)
-    }
-    
-  };
+const createHotel = async (hotelData) => {
+  try {
+    const createdHotel = await Hotel.create(hotelData);
+    return createdHotel;
+  } catch (error) {
+    console.error('Error creating hotel:', error);
+    throw error;
+  }
+};
 
 const getHotelById = async () => {
   try {
-    const data = await Hotel.findAll();
+    const data = await Hotel.findAll({
+      where: {
+        status: true
+      }
+    });
     return data;
   } catch (error) {
     console.error('Error retrieving users:', error);

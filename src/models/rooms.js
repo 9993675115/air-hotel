@@ -12,9 +12,17 @@ module.exports = (sequelize) => {
       allowNull: false,
       type: DataTypes.INTEGER,
     },
+    hotelId: {  // Add this foreign key
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Hotel', // Assuming your Category model name is 'Category' and table name is 'Categories'
+        key: 'id'
+      } 
+    },
     roomNumber: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     },
     roomTypeId: {
       allowNull: false,
@@ -79,7 +87,18 @@ module.exports = (sequelize) => {
   }
   );
 
-  // Add associations if needed
+  Room.associate = function(models) {
+    Room.belongsTo(models.Hotel, {
+        foreignKey: 'id',
+        // onDelete: 'CASCADE'
+    });
+  };
 
+  Room.associate = function(models) {
+    Room.hasOne(models.Booking, {
+        foreignKey: 'id',
+        as: 'roomId'
+    });
+  };
   return Room;
 };

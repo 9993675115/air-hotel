@@ -1,9 +1,22 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('hotels', {
+    return queryInterface.createTable('Hotels', {
       // ... (existing columns)
 
       // New columns
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },  
+      categoryId: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      name: {
+        type: Sequelize.STRING
+      },
       address: {
         allowNull: false,
         type: Sequelize.STRING
@@ -22,7 +35,7 @@ module.exports = {
       },
       pincode: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       distanceFromAirport: {
         allowNull: false,
@@ -60,13 +73,24 @@ module.exports = {
         allowNull: false,
         type: Sequelize.ARRAY(Sequelize.STRING)
       },
-
+      status: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN // Adjust the data type based on your requirements
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
       // ... (existing columns)
 
     });
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable('hotels');
+    return queryInterface.dropTable('Hotels');
   }
 };

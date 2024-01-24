@@ -4,9 +4,10 @@ const catchAsync = require('../utils/catchAsync');
 const hotelServices  = require('../services');
 
 const createHotel = async (req, res) => {
-    const hotels= await hotelServices.hotelService.createHotel(req.body);
-    res.status(httpStatus.CREATED).send({ hotels });
+  const createdHotel= await hotelServices.hotelService.createHotel(req.body);
+  res.status(httpStatus.CREATED).send({ message:"hotel added successfully" });
 };
+
 
 const getHotelById = async (req, res) => {
   try {

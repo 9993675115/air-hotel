@@ -29,18 +29,30 @@ const getAllRoom = catchAsync(async (req, res) => {
 
 
 const updateRoom = async (req, res) => {
+  const { roomId } = req.params;
+  const updateData = req.body;
+
   try {
-    const roomId = req.params;
-    const updatedData = req.body;
-    const updateRoom = await roomsService.updateRoom(roomId, updatedData);
-    if (updateRoom) {
-      res.status(200).send({ data: updatedData, message: ' updated successfully' });
-    } else {
-      res.status(404).send({ message:' not found', status: 0 });
-    }
+    const updatedRoom = await roomsService.updateRoom(roomId, updateData);
+
+    res.status(200).json({
+      // success: true,
+      message: 'Room updated successfully',
+      data: updatedRoom,
+    });
   } catch (error) {
-    console.error('Error updating :', error);
-    res.status(500).send({ message: 'Internal server error', status: -1 });
+    if (error.message === 'Room not found') {
+      res.status(404).json({
+        // success: false,
+        message: 'Room not found',
+      });
+    } else {
+      console.error('Error updating room in controller:', error);
+      res.status(500).json({
+        // success: false,
+        message: 'Internal server error',
+      });
+    }
   }
 };
 
