@@ -12,13 +12,13 @@ const createBooking = {
   roomQuantity: Joi.number().required(),
   userId: Joi.number().required(),
   roomId: Joi.number().required(),
-  address: Joi.string().required(),
+  addressId: Joi.number().required(),
   status: Joi.string().required(),
 };
 const getBookingsValidation = Joi.object({
   userId: Joi.number(),
   roomId: Joi.number(),
-  status: Joi.string().valid('pending', 'confirmed', 'cancelled'),
+  status: Joi.boolean(),
   // You can add more validation rules as needed for your specific use case
 });
 

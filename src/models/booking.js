@@ -40,17 +40,25 @@ module.exports = (sequelize) => {
     },
     userId: {
       type: DataTypes.INTEGER,
+      references: {
+        model: 'User', // Assuming your Category model name is 'Category' and table name is 'Categories'
+        key: 'id'
+      } 
     },
     roomId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'Room', // Assuming your Category model name is 'Category' and table name is 'Categories'
+        key: 'id'
+      } 
     },
-    address: {
-      type: DataTypes.STRING,
+    addressId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     status: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },

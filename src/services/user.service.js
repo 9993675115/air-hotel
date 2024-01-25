@@ -40,7 +40,7 @@ const updateUserById = async (req) => {
 const getAllUser = async () => {
   return User.findAll({
     where: {  status: true },
-     include:  Booking 
+    // include:  Booking 
   });
 };
 const getUserById = async (userId) => {
