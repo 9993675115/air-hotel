@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     }
+  },
+  {
+    tableName: 'Tokens',
+    freezeTableName: true
   });
   return Token;
 };

@@ -10,10 +10,7 @@ module.exports = {
       userId: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: 'Users', // Assuming you have a 'users' table
-          key: 'id'
-        }
+        
       },
       address: {
         allowNull: false,

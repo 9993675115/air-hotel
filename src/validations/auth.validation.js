@@ -2,11 +2,22 @@ const Joi = require('joi');
 
 const register = {
   body: Joi.object().keys({
+    firstName: Joi.string().required(), // Assuming firstName is optional
+    lastName: Joi.string().required(), // Assuming lastName is optional
     email: Joi.string().required().email(),
-    name :Joi.string().optional(),
-    password: Joi.string().required()
+    password: Joi.string().required(),
+    role: Joi.string().optional(), // Assuming role is optional
+    status: Joi.boolean().optional(), // Assuming status is optional
+    isVerify: Joi.boolean().optional(), // Assuming isVerify is optional
+    Dob: Joi.date().optional(), // Assuming Dob is optional and should be a date
+    country: Joi.string().optional(), // Assuming country is optional
+    image: Joi.object().optional(), // Assuming image is optional and should be an object
+    featureImage: Joi.object().optional(), // Assuming featureImage is optional and should be an object
+    companyName: Joi.string().optional(),
+    contact: Joi.number().required(), // Assuming companyName is optional
   })
 };
+
 
 const login = {
   body: Joi.object().keys({
@@ -32,11 +43,17 @@ const generatePassword = {
     password: Joi.string().required()
   })
 };
+const getUserById = {
+  params: Joi.object({
+    id: Joi.number().required(),
+  }),
+};
 
 module.exports = {
   login,
   logout,
   refreshTokens,
   register,
-  generatePassword
+  generatePassword,
+  getUserById
 };

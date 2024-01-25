@@ -2,8 +2,11 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
     {
-      name: {
+      firstName: {
         type: DataTypes.STRING
+      },
+      lastName: {
+        type: DataTypes.STRING // Make sure the column name matches the migration file
       },
       email: {
         type: DataTypes.STRING,
@@ -16,10 +19,29 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: 'user'
       },
-      // settings: {
-      //   type: DataTypes.JSONB
-      // },
+      Dob: {
+        type: DataTypes.DATE
+      },
+      country: {
+        type: DataTypes.STRING
+      },
+      image: {
+        type: DataTypes.JSON // Assuming image is stored as JSON
+      },
+      featureImage: {
+        type: DataTypes.JSON // Assuming featureImage is stored as JSON
+      },
+      companyName: {
+        type: DataTypes.STRING
+      },
       status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
+      contact:{
+        type: DataTypes.BIGINT
+      },
+      isVerify: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       }

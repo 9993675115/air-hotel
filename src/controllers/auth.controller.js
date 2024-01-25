@@ -17,6 +17,7 @@ const login = catchAsync(async (req, res) => {
 });
 
 const logout = catchAsync(async (req, res) => {
+  console.log("hhhhhhhhhhhhhhhhhhhhhhhh",req)
   await authService.logout(req.body.refreshToken);
   res.status(httpStatus.NO_CONTENT).send();
 });
@@ -35,11 +36,34 @@ const getAllUser = catchAsync(async (req, res) => {
   res.send({ data });
 });
 
+const getUserByID = async (req, res) => {
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const userId = req.params.id;
+
+  try {
+    const user = await userService.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Customize the response as needed
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
   refreshTokens,
   generatePassword,
-  getAllUser
+  getAllUser,
+  getUserByID
 };

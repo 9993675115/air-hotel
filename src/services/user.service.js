@@ -20,15 +20,6 @@ const createUser = async (_userBody) => {
   return User.create(userBody);
 };
 
-const getUserById = async (id) => {
-  return User.findOne({
-    where: {
-      id,
-      status: true
-    }
-  });
-};
-
 const getUserByEmail = async (email) => {
   return User.findOne({
     where: { email, status: true }
@@ -52,13 +43,23 @@ const getAllUser = async () => {
      include:  Booking 
   });
 };
+const getUserById = async (userId) => {
+  try {
+    const user = await User.findByPk({
+      where: { email, status: true }
+    });
+    return user;
+  } catch (error) {
+    throw new Error('Error fetching user by ID');
+  }
+};
 
 module.exports = {
   createUser,
-  getUserById,
   getUserByEmail,
   getUserWithSecretFields,
   getUserWithSecretFieldsById,
   updateUserById,
-  getAllUser
+  getAllUser,
+  getUserById
 };

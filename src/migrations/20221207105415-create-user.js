@@ -7,8 +7,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      firstName: {
         type: Sequelize.STRING
+      },
+      lastName: {
+        type: Sequelize.STRING // Add lastname column
       },
       email: {
         type: Sequelize.STRING
@@ -21,6 +24,27 @@ module.exports = {
       },
       status: {
         type: Sequelize.BOOLEAN
+      },
+      isVerify: {
+        type: Sequelize.BOOLEAN // Add isVerify column
+      },
+      Dob: {
+        type: Sequelize.DATE // Assuming Date of Birth is a date column
+      },
+      country: {
+        type: Sequelize.STRING
+      },
+      image: {
+        type: Sequelize.JSON // Assuming image is a string path to the image file
+      },
+      featureImage: {
+        type:  Sequelize.JSON  // Assuming featureImage is a string path to the feature image file
+      },
+      companyName: {
+        type: Sequelize.STRING // Add companyName column
+      },
+      contact:{
+        type: Sequelize.BIGINT
       },
       createdAt: {
         allowNull: false,
