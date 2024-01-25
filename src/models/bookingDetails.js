@@ -5,10 +5,18 @@ module.exports = (sequelize) => {
     bookingId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'Booking', // Assuming your Category model name is 'Category' and table name is 'Categories'
+        key: 'id'
+      }
     },
     roomId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'Room', // Assuming your Category model name is 'Category' and table name is 'Categories'
+        key: 'id'
+      }
     },
     paymentType: {
       type: DataTypes.STRING,

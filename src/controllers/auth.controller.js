@@ -17,9 +17,8 @@ const login = catchAsync(async (req, res) => {
 });
 
 const logout = catchAsync(async (req, res) => {
-  console.log("hhhhhhhhhhhhhhhhhhhhhhhh",req)
   await authService.logout(req.body.refreshToken);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.OK).send({message:"logout successfully"});
 });
 
 const refreshTokens = catchAsync(async (req, res) => {
