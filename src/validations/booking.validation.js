@@ -12,8 +12,8 @@ const createBooking = {
   roomQuantity: Joi.number().required(),
   userId: Joi.number().required(),
   roomId: Joi.number().required(),
-  addressId: Joi.number().required(),
-  status: Joi.string().required(),
+  address: Joi.string().required(),
+  status: Joi.boolean().required(),
 };
 const getBookingsValidation = Joi.object({
   userId: Joi.number(),

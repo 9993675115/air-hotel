@@ -11,41 +11,63 @@ const createRating = async (_userBody) => {
   console.log("-----------",userBody)
   return Rating.create(userBody);
 };
-const getRatingById = async () => {
+const getRatingById = async (ratingId) => {
   try {
-    const data = await Rating.findAll();
-    return data;
+    const rating = await Rating.findByPk(ratingId);
+
+    if (!rating) {
+      throw new Error('Rating not found');
+    }
+
+    return rating;
   } catch (error) {
-    console.error('Error retrieving users:', error);
+    console.error('Error fetching rating by ID:', error);
     throw error;
   }
 };
 
-const updateRating = async (ratingId, updatedData) => {
+const updateRating = async (ratingId, updateData) => {
   try {
-    const findData = await Rating.findOne({
-      where: { ratingId: ratingId }
-    });
-    if (findData) {
-      await Rating.update(updatedData, { where: { ratingId: ratingId } });
-      return true;
-    } else {
-      return false;
+    const rating = await Rating.findByPk(ratingId);
+
+    if (!rating) {
+      throw new Error('Rating not found');
     }
+
+    // Update the rating with the provided data
+    await rating.update(updateData);
+
+    // Return the updated rating
+    return rating;
   } catch (error) {
-    console.error('Error updating user by id:', error);
+    console.error('Error updating rating by ID:', error);
     throw error;
   }
 };
+
+const getAllRating = async (userId) => {
+  try {
+    const ratings = await Rating.findAll({status:true},{
+      where: { userId },
+    });
+
+    return ratings;
+  } catch (error) {
+    console.error('Error getting ratings by user ID:', error);
+    throw error;
+  }
+};
+
 
 const deleteRating = async (ratingId) => {
   try {
-    const deletedRowsCount = await Rating.destroy({
-      where: { ratingId: ratingId }
+    const deletedRowCount = await Rating.update({status:false},{
+      where: { id: ratingId },
     });
-    return deletedRowsCount;
+
+    return deletedRowCount;
   } catch (error) {
-    console.error('Error deleting user by id:', error);
+    console.error('Error deleting rating by ID:', error);
     throw error;
   }
 };
@@ -56,5 +78,5 @@ module.exports = {
   getRatingById,
   updateRating,
   deleteRating,
-  // Add more service methods as needed
+  getAllRating
 };

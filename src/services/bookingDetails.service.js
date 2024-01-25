@@ -62,10 +62,12 @@ const deleteBookingDetail = async (bookingDetailId) => {
       throw new Error('Booking detail ID is required for deletion.');
     }
 
-    const deletedRowsCount = await BookingDetails.update({status:false},{
-      where: { id: bookingDetailId }
-    });
-
+    const deletedRowsCount = await BookingDetails.update(
+      { status: false },
+      {
+        where: { id: bookingDetailId }, // Assuming the primary key is named 'id'
+      }
+    );
     return deletedRowsCount;
   } catch (error) {
     console.error('Error deleting booking detail by id:', error);

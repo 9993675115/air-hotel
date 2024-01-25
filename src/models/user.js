@@ -62,5 +62,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId'
     });
   };
+  User.associate = function(models) {
+    User.hasOne(models.Rating, {
+        foreignKey: 'id',
+        // as: 'categoryId'
+    });
+  };
    return User;
 };

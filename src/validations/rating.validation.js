@@ -10,7 +10,7 @@ const updateRatingValidation = {
   body: Joi.object({
     // Define the validation schema for updating a rating
     // Example:
-    userId: Joi.string(),
+    userId: Joi.number(),
     ratingValue: Joi.number().min(1).max(5),
     // Add more validation as needed
   }),
@@ -18,7 +18,13 @@ const updateRatingValidation = {
     ratingId: Joi.string().required(),
   }),
 };
+const getRatingByIdValidation = {
+  params: Joi.object({
+    ratingId: Joi.number().integer().positive().required(),
+  }),
+};
 module.exports = {
   createRating,
-  updateRatingValidation
+  updateRatingValidation,
+  getRatingByIdValidation
 };

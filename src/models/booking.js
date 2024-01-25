@@ -53,8 +53,8 @@ module.exports = (sequelize) => {
         key: 'id'
       } 
     },
-    addressId: {
-      type: DataTypes.INTEGER,
+    address: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     status: {
@@ -80,6 +80,13 @@ Booking.associate = function(models) {
       foreignKey: 'id',
       // onDelete: 'CASCADE'
   });
+};
+Booking.associate = function(models) {
+  Booking.hasOne(models.Room, {
+      foreignKey: 'id',
+      // as: 'roomId'
+  },
+  );
 };
   return Booking;
 };

@@ -55,14 +55,28 @@ const updateBookingDetail = async (req, res) => {
 };
 
 const deleteBookingDetail = async (req, res) => {
-  const id = req.params.id;
-  const deleteBookingDetail = await bookingDetailsService.bookingDetailsService.deleteBookingDetail(id);
-  if (deleteBookingDetail) {
-    res.status(httpStatus.OK).send({ message: ' deleted successfully' });
-  } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in  delete' });
+  try {
+    const bookingDetailId = req.params.bookingDetailId;
+
+    // Check if bookingDetailId is falsy or not a positive integer
+    if (!bookingDetailId || isNaN(bookingDetailId) || bookingDetailId <= 0) {
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Invalid booking detail ID' });
+    }
+
+    const deletedRowsCount = await bookingDetailsService.bookingDetailsService.deleteBookingDetail(bookingDetailId);
+
+    if (deletedRowsCount > 0) {
+      res.status(httpStatus.OK).json({ message: 'Deleted successfully' });
+    } else {
+      res.status(httpStatus.NO_CONTENT).json({ message: 'Error in deletion' });
+    }
+  } catch (error) {
+    console.error('Error deleting booking detail by id:', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
   }
 };
+
+
 
 module.exports = {
   createBookingDetail,

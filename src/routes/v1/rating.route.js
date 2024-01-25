@@ -9,12 +9,14 @@ router.post('/createRating', validate(ratingValidation.createRating), ratingCont
 // Add more routes as needed
 
 // GET /api/ratings/:ratingId
-router.get('/:ratingId', ratingController.getRatingById);
+router.get('/:ratingId', validate(ratingValidation.getRatingByIdValidation),ratingController.getRatingById);
 
 // PUT /api/ratings/:ratingId
 router.put('/:ratingId', validate(ratingValidation.updateRatingValidation), ratingController.updateRating);
 
-// DELETE /api/ratings/:ratingId
+
+ router.get('/', ratingController.getAllRating);
+
 router.delete('/:ratingId', ratingController.deleteRating);
 
 module.exports = router;

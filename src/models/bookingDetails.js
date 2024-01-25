@@ -36,7 +36,18 @@ module.exports = (sequelize) => {
   }
 );
 
-  // Add associations if needed
+BookingDetail.associate = function(models) {
+  BookingDetail.belongsTo(models.Room, {
+      foreignKey: 'id',
+      // onDelete: 'CASCADE'
+  });
+};
 
+BookingDetail.associate = function(models) {
+  BookingDetail.belongsTo(models.Booking, {
+      foreignKey: 'id',
+      // onDelete: 'CASCADE'
+  })
+};
   return BookingDetail;
 };

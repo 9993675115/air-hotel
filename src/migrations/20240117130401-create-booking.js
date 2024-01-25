@@ -59,9 +59,9 @@ module.exports = {
           //   key: 'id'
           // }
         },
-        addressID: {
+        address: {
           allowNull: false,
-          type: Sequelize.INTEGER
+          type: Sequelize.STRING
         },
         status: {
           allowNull: false,

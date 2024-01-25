@@ -95,10 +95,17 @@ module.exports = (sequelize) => {
   };
 
   Room.associate = function(models) {
-    Room.hasOne(models.Booking, {
+    Room.hasOne(models.Booking,{
         foreignKey: 'id',
-        as: 'roomId'
-    });
+        // as: 'roomId'
+    })
+  };
+  
+  Room.associate = function(models) {
+    Room.hasMany(models.BookingDetails,{
+        foreignKey: 'id',
+        // as: 'roomId'
+    })
   };
   return Room;
 };

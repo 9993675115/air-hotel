@@ -9,39 +9,62 @@ const createRating = catchAsync(async (req, res) => {
 });
 
 const getRatingById = async (req, res) => {
-  const userBody=req.body
-  const data =await ratingService.getRatingById(userBody)
-  if(data){
-    res.status(200).send('GET booking by ID');
-  }else{
-    res.status(404).send('not found');
+  try {
+    const ratingId = req.params.ratingId;
+
+    // The ratingId is already validated by the middleware, so no need for additional validation here
+
+    const rating = await ratingService.getRatingById(ratingId);
+
+    res.status(httpStatus.OK).json({ rating });
+  } catch (error) {
+    console.error('Error getting rating by ID:', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
   }
-  };
-  
-  const updateRating = async (req, res) => {
+};
+const updateRating = async (req, res) => {
+  try {
+    const ratingId = req.params.ratingId;
+    const updateData = req.body;
+
+    // The ratingId and updateData are already validated by the middleware, so no need for additional validation here
+
+    const updatedRating = await ratingService.updateRating(ratingId, updateData);
+
+    res.status(httpStatus.OK).json({ updatedRating });
+  } catch (error) {
+    console.error('Error updating rating by ID:', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getAllRating = async (req, res) => {
+  const userId = req.params.ratingId;
+
+  try {
+    const ratings = await ratingService.getAllRating(userId);
+
+    res.status(httpStatus.OK).send({ ratings });
+  } catch (error) {
+    console.error('Error getting ratings by user ID:', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Error getting ratings' });
+  }
+};
+  const deleteRating = async (req, res) => {
+    const ratingId = req.params.ratingId;
+
     try {
-      const ratingId = req.params;
-      const updatedData = req.body;
-      const updateRating = await ratingService.updateRating(ratingId, updatedData);
-      if (updateRating) {
-        res.status(200).send({ data: updatedData, message: ' updated successfully' });
+      const deletedRowCount = await ratingService.deleteRating(ratingId);
+  
+      if (deletedRowCount > 0) {
+        res.status(httpStatus.OK).send({ message: 'Rating deleted successfully' });
       } else {
-        res.status(404).send({ message:' not found', status: 0 });
+        res.status(httpStatus.NOT_FOUND).send({ message: 'Rating not found' });
       }
     } catch (error) {
-      console.error('Error updating :', error);
-      res.status(500).send({ message: 'Internal server error', status: -1 });
+      console.error('Error deleting rating by ID:', error);
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Error deleting rating' });
     }
-  };
-  
-  const deleteRating = async (req, res) => {
-    // Implementation to delete booking by ID
-  const deleteRating = await ratingService.deleteRating(querry);
-  if (deleteRating) {
-    res.status(httpStatus.OK).send({ message: ' deleted successfully' });
-  } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in  delete' });
-  }
   };
 
 module.exports = {
@@ -49,5 +72,6 @@ module.exports = {
   getRatingById,
   updateRating,
   deleteRating,
+  getAllRating
   // Add more controller methods as needed
 };
