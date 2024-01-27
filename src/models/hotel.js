@@ -81,7 +81,7 @@ const Hotel = sequelize.define('Hotel', {
   },
   status: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
+    defaultValue: true,
   },
   createdAt: {
     allowNull: false,

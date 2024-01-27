@@ -33,11 +33,27 @@ const Category = sequelize.define('Category', {
 Category.associate = function(models) {
   Category.hasOne(models.Hotel, {
       foreignKey: 'id',
-      as: 'categoryId'
+     // as: 'categoryId'
   });
 };
 
-// Category.hasMany(Hotel, { foreignKey: 'Category', as: 'Hotel' });
+// const storage = multer.diskStorage({
+//   destination: './uploads/', // Set the destination folder for uploaded files
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//   },
+// });
+
+// const upload = multer({ storage: storage });
+
+// // Add a method to handle image upload
+// Category.uploadImage = upload.single('image');
+
+// Category.associate = function(models) {
+//   Category.hasOne(models.Hotel, {
+//     foreignKey: 'categoryId', // Use the correct foreign key
+//   });
+// };
 
 return Category;
 }

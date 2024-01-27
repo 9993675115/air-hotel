@@ -25,17 +25,18 @@ const createCategory = async (_userBody) => {
  
   const getAllCategories = async () => {
     try {
-      const categories = await Category.findAll({
+      const data = await Category.findAll({
         where: {
-          status: true
-        }
+          status: true,
+        },
       });
-      return categories;
+      return data;
     } catch (error) {
-      console.error('Error getting categories with status true:', error);
+      console.error('Error getting categories:', error);
       throw error;
     }
   };
+  
   
   const getCategoryById = async (categoryId) => {
     try {

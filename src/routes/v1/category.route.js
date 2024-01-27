@@ -20,5 +20,6 @@ router.put('/:categoryId', validate(categoryValidation.updateCategorySchema), ca
 // DELETE /api/bookings/:bookingId
 router.delete('/:categoryId', categoryController.deleteCategory);
 
+//router.post('/image',)
 
 module.exports = router;
