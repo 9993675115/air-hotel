@@ -11,7 +11,7 @@ const createRating = async (_userBody) => {
   console.log("-----------",userBody)
   return Rating.create(userBody);
 };
-const getRatingById = async (ratingId) => {
+const getRatingById = async () => {
   try {
     const rating = await Rating.findByPk(ratingId);
 

@@ -11,9 +11,9 @@ const createBooking = async (_userBody) => {
   console.log("-----------",userBody)
   return Booking.create(userBody);
 };
-const getBookingById = async () => {
+const getBookingById = async (bookingId) => {
   try {
-    const data = await Booking.findAll();
+    const data = await Booking.findByPk(bookingId);
     return data;
   } catch (error) {
     console.error('Error retrieving users:', error);

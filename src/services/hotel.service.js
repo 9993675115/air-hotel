@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
-const  {Hotel} = require('../models');
+const  {Hotel, Category} = require('../models');
 
 const createHotel = async (hotelData) => {
   try {
@@ -16,22 +16,22 @@ const createHotel = async (hotelData) => {
   }
 };
 
-const getHotelById = async () => {
+const getHotelById = async (id) => {
   try {
-    const data = await Hotel.findAll({
-      where: {
-        status: true
-      }
-    });
-    return data;
+    const hotel = await Hotel.findByPk(id,{where: {},
+      include: Category});
+    return hotel;
   } catch (error) {
-    console.error('Error retrieving users:', error);
+    console.error('Error getting hotel by ID:', error);
     throw error;
   }
 };
 const getAllHotels = async () => {
   try {
-    const hotels = await Hotel.findAll();
+    const hotels = await Hotel.findAll({
+      where: {},
+      include: Category
+    });
     return hotels;
   } catch (error) {
     console.error('Error getting all hotels:', error);

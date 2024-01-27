@@ -12,7 +12,15 @@ module.exports = {
       },  
       categoryId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Categories', // Assuming your Category model name is 'Category' and table name is 'Categories'
+          key: 'id'
+        } // 
+        // refrences:{
+        //   model:'Categories',
+        //   key:'id'
+        // }
       },
       name: {
         type: Sequelize.STRING
@@ -59,11 +67,11 @@ module.exports = {
       },
       checkInTime: {
         allowNull: false,
-        type: Sequelize.TIME
+        type: Sequelize.DATE
       },
       checkOutTime: {
         allowNull: false,
-        type: Sequelize.TIME
+        type: Sequelize.DATE
       },
       description: {
         allowNull: false,

@@ -3,10 +3,43 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const { roomsService } = require('../services');
 
+// const createRoom = catchAsync(async (req, res) => {
+//   try{
+//   const Room = await roomsService.createRoom(req.body);
+//   res.status(httpStatus.CREATED).send({ Room });
+//   }
+//   catch (error) {
+//     console.error('Error Room by id:', error);
+//     return res.status(500).json({ error: error });
+//   }
+// });
 const createRoom = catchAsync(async (req, res) => {
-  const Room = await roomsService.createRoom(req.body);
-  res.status(httpStatus.CREATED).send({ Room });
+  try {
+    const room = await roomsService.createRoom(req.body);
+
+    // Assuming createRoom returns a boolean or the created room object
+    if (room) {
+      res.status(httpStatus.CREATED).send({ room });
+    } else {
+      // Handle the case where room creation fails for some reason
+      return res.status(400).json({ error: "Failed to create the room." });
+    }
+  } catch (error) {
+    console.error('Error creating room:', error);
+
+    if (error.name === 'ValidationError') {
+      // Handle validation errors (e.g., missing required fields)
+      return res.status(400).json({ error: 'Validation error. Please provide all required fields.' });
+    } else if (error.name === 'SequelizeUniqueConstraintError') {
+      // Handle unique constraint violation (duplicate entry)
+      return res.status(400).json({ error: 'Room with the same details already exists.' });
+    } else {
+      // Handle other types of errors
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 });
+
 const getRoomById = async (req, res) => {
   const roomId = req.params.roomId; // Corrected: Retrieve the roomId from req.params
   try {

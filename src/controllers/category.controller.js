@@ -32,10 +32,46 @@ const getCategoryById = async (req, res) => {
 };
 
 
+// const createCategory = async (req, res) => {
+  
+//   try{
+//     const category = await categoryServices.createCategory(req.body);
+//     if(category){
+//       res.status(httpStatus.CREATED).send({ message: "Category added successfully" });
+//     }
+//   }catch (error) {
+//     console.error('Error deleting category by id:', error);
+//     return res.status(500).json({ error: error });
+//   }
+
+// };
 const createCategory = async (req, res) => {
-  const category = await categoryServices.createCategory(req.body);
-  res.status(httpStatus.CREATED).send({ message: "Category added successfully" });
+  try {
+    const category = await categoryServices.createCategory(req.body);
+
+    // Assuming createCategory returns a boolean indicating success
+    if (category) {
+      res.status(httpStatus.CREATED).send({ message: "Category added successfully" });
+    } else {
+      // Handle the case where category creation fails for some reason
+      return res.status(400).json({ error: "Failed to create the category." });
+    }
+  } catch (error) {
+    console.error('Error creating category:', error);
+
+    if (error.name === 'ValidationError') {
+      // Handle validation errors (e.g., missing required fields)
+      return res.status(400).json({ error: 'Validation error. Please provide all required fields.' });
+    } else if (error.name === 'SequelizeUniqueConstraintError') {
+      // Handle unique constraint violation (duplicate entry)
+      return res.status(400).json({ error: 'Category with the same details already exists.' });
+    } else {
+      // Handle other types of errors
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 };
+
 const updateCategory = catchAsync(async (req, res) => {
   const categoryId = req.params.categoryId;
   const updateData = req.body;

@@ -3,17 +3,40 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const hotelServices  = require('../services');
 
+// const createHotel = async (req, res) => {
+//   try{
+//   const createdHotel= await hotelServices.hotelService.createHotel(req.body);
+//   res.status(httpStatus.CREATED).send({ message:"hotel added successfully" });
+//   }
+//   catch (error) {
+//     console.error('Error createdHotel by id:', error);
+//     return res.status(500).json({ error: error });
+//   }
+// };
 const createHotel = async (req, res) => {
-  const createdHotel= await hotelServices.hotelService.createHotel(req.body);
-  res.status(httpStatus.CREATED).send({ message:"hotel added successfully" });
+  try {
+    const createdHotel = await hotelServices.hotelService.createHotel(req.body);
+    res.status(httpStatus.CREATED).send({ message: "Hotel added successfully", data: createdHotel });
+  } catch (error) {
+    console.error('Error creating hotel:', error);
+
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      // Handle unique constraint violation (duplicate entry)
+      return res.status(400).json({ error: 'Hotel with the same details already exists.' });
+    } else {
+      // Handle other types of errors
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 };
+
 
 
 const getHotelById = async (req, res) => {
   try {
-    const { Id } = req.params; // Assuming bookingId is in req.params
+    const id = req.params.id; // Assuming bookingId is in req.params
 
-    const data = await hotelServices.hotelService.getHotelById(Id);
+    const data = await hotelServices.hotelService.getHotelById(id);
 
     if (data) {
       res.status(200).send({ data, message: 'GET hotel by ID' });
