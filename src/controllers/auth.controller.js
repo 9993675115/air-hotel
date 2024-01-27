@@ -1,7 +1,9 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
+const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
 const { authService, tokenService, userService } = require('../services');
+const fs = require('fs');
 
 // const ApiError = require('../utils/ApiError');
 
@@ -57,6 +59,42 @@ const getUserByID = async (req, res) => {
   }
 };
 
+// const uploadImage = async (req, res) => {
+//   console.log("popopopopoppop",req.file.fileName)
+//   try {
+//     const image = req.file.fileName;
+//     if (req.file === undefined) {
+//       return res.status(401).send({ message: `You must select a file.` });
+//     }
+//     res.send({ message: 'image uploaded sucessfully', image });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).send(`Error when trying upload images: ${error}`);
+//   }
+// };
+
+
+// authController.js
+
+// Assuming you have already imported necessary modules like multer, fs, etc.
+
+const uploadImage = (req, res) => {
+  if (!req.file.filename) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  const filename = req.file.filename; // Accessing the file information
+
+  const image = req.file; // Accessing the file information
+  const imageName = image; 
+  const uploadDir = './uploads/';
+  fs.rename(image.path, uploadDir + imageName, function(err) {
+    if (err) {
+      return res.status(500).json({ error: 'Error saving the file' });
+    }
+    return res.status(200).json({ message: 'File uploaded successfully',filename });
+  });
+};
+
 module.exports = {
   register,
   login,
@@ -64,5 +102,6 @@ module.exports = {
   refreshTokens,
   generatePassword,
   getAllUser,
-  getUserByID
+  getUserByID,
+  uploadImage
 };
