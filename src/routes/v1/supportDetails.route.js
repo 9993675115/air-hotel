@@ -11,8 +11,10 @@ router.post('/createSupportDetail', validate(supportDetailValidation.createSuppo
 // GET /api/supportDetails/:supportDetailId
 router.get('/:supportDetailId', supportDetailController.getSupportDetailById);
 
+router.get('/', supportDetailController.getAllSupportDetail);
+
 // PUT /api/supportDetails/:supportDetailId
-router.put('/:supportDetailId', validate(supportDetailValidation.updateSupportDetail), supportDetailController.updateSupportDetail);
+router.put('/:supportDetailId', validate(supportDetailValidation.updateSupportDetailValidation), supportDetailController.updateSupportDetail);
 
 // DELETE /api/supportDetails/:supportDetailId
 router.delete('/:supportDetailId', supportDetailController.deleteSupportDetail);

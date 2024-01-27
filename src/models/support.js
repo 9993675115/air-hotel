@@ -15,12 +15,12 @@ module.exports = (sequelize,DataTypes) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },
   {
-    tableName: 'supports',
+    tableName: 'Supports',
     freezeTableName: true
   });
 

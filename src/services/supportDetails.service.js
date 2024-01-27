@@ -6,13 +6,28 @@ const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 const { SupportDetail } = require('../models');
 
-const createSupportDetail = async (supportDetailBody) => {
-  const supportDetail = await SupportDetail.create(supportDetailBody);
-  return supportDetail;
+const createSupportDetail = async (supportDetailData) => {
+  try {
+    const createdSupportDetail = await SupportDetail.create(supportDetailData);
+    return createdSupportDetail;
+  } catch (error) {
+    console.error('Error creating support detail:', error);
+    throw error;
+  }
 };
 const getSupportDetailById = async (supportDetailId) => {
   const supportDetail = await SupportDetail.findByPk(supportDetailId);
   return supportDetail;
+};
+
+const getAllSupportDetails = async () => {
+  try {
+    const supportDetails = await SupportDetail.findAll();
+    return supportDetails;
+  } catch (error) {
+    console.error('Error getting all support details:', error);
+    throw error;
+  }
 };
 
 const updateSupportDetail = async (supportDetailId, updatedData) => {
@@ -26,12 +41,15 @@ const updateSupportDetail = async (supportDetailId, updatedData) => {
 };
 
 const deleteSupportDetail = async (supportDetailId) => {
-  const supportDetail = await SupportDetail.findByPk(supportDetailId);
-  if (!supportDetail) {
-    throw new Error('SupportDetail not found');
+  try {
+    const deletedCount = await SupportDetail.update({status:false},{
+      where: { id: supportDetailId },
+    });
+    return deletedCount;
+  } catch (error) {
+    console.error('Error deleting support detail:', error);
+    throw error;
   }
-
-  await supportDetail.destroy();
 };
 
 module.exports = {
@@ -39,5 +57,6 @@ module.exports = {
   getSupportDetailById,
   updateSupportDetail,
   deleteSupportDetail,
+  getAllSupportDetails
   // Add more service methods as needed
 };

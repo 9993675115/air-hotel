@@ -11,8 +11,24 @@ const createSupport = async (_supportBody) => {
   return Support.create(supportBody);
 };
 const getSupportById = async (supportId) => {
-  const support = await Support.findByPk(supportId);
-  return support;
+  try {
+    const support = await Support.findByPk(supportId);
+    return support;
+  } catch (error) {
+    console.error('Error getting support by ID:', error);
+    throw error;
+  }
+};
+
+
+const getAllSupport = async () => {
+  try {
+    const supports = await Support.findAll({where:{status:true}});
+    return supports;
+  } catch (error) {
+    console.error('Error getting all supports:', error);
+    throw error;
+  }
 };
 
 const updateSupport = async (supportId, updatedData) => {
@@ -26,12 +42,17 @@ const updateSupport = async (supportId, updatedData) => {
 };
 
 const deleteSupport = async (supportId) => {
-  const support = await Support.findByPk(supportId);
-  if (!support) {
-    throw new Error('Support not found');
+  try {
+    const deletedCount = await Support.update({status:false},{
+      where: {
+        id: supportId,
+      },
+    });
+    return deletedCount;
+  } catch (error) {
+    console.error('Error deleting support:', error);
+    throw error;
   }
-
-  await support.destroy();
 };
 
 module.exports = {
@@ -39,5 +60,5 @@ module.exports = {
   getSupportById,
   updateSupport,
   deleteSupport,
-  // Add more service methods as needed
+  getAllSupport
 };

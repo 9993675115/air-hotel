@@ -76,7 +76,8 @@ const getUserByID = async (req, res) => {
 // Assuming you have already imported necessary modules like multer, fs, etc.
 
 const uploadImage = (req, res) => {
-  if (!req.file.filename) {
+  console.log("!!!!!!!!!!!!",req.file)
+  if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
   const filename = req.file.filename; // Accessing the file information

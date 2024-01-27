@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const SupportDetail = sequelize.define('Supportdetail', {
+  const SupportDetail = sequelize.define('SupportDetail', {
     supportId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -15,12 +15,12 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
   },
   {
-    tableName: 'Supportdetails',
+    tableName: 'SupportDetails',
     freezeTableName: true
   }
   );

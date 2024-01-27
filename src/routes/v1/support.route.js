@@ -11,6 +11,8 @@ router.post('/createSupport', validate(supportValidation.createSupport), support
 // GET /api/supports/:supportId
 router.get('/:supportId', supportController.getSupportById);
 
+router.get('/', supportController.getAllSupport);
+
 // PUT /api/supports/:supportId
 router.put('/:supportId', validate(supportValidation.updateSupport), supportController.updateSupport);
 
