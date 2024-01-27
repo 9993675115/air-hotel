@@ -65,11 +65,11 @@ const Hotel = sequelize.define('Hotel', {
   },
   checkInTime: {
     allowNull: false,
-    type: DataTypes.TIME
+    type: DataTypes.DATE
   },
   checkOutTime: {
     allowNull: false,
-    type: DataTypes.TIME
+    type: DataTypes.DATE
   },
   description: {
     allowNull: false,
@@ -96,21 +96,15 @@ const Hotel = sequelize.define('Hotel', {
     freezeTableName: true
   });
 
-  
 
-Hotel.associate = function(models) {
-  Hotel.belongsTo(models.Category, {
-      foreignKey: 'id',
-      // onDelete: 'CASCADE'
-  });
-};
-Hotel.associate = function(models) {
-  Hotel.hasOne(models.Room, {
-      foreignKey: 'id',
-      as: 'hotelId'
-  });
-};
-
+  Hotel.associate = function(models) {
+    Hotel.belongsTo(models.Category, {
+      foreignKey: 'categoryId', // Correct foreign key
+    });
+    Hotel.hasOne(models.Room, {
+      foreignKey: 'hotelId', // Correct foreign key for Room association
+    });
+  };
   // Hotel.belongsTo(Category, { foreignKey: 'Category', as: 'Category' });
   return Hotel;
 }

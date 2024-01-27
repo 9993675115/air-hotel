@@ -7,7 +7,8 @@ const { authService, tokenService, userService } = require('../services');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send({ user , message:"register Successfully",});
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.status(httpStatus.CREATED).send({ user ,tokens, message:"register Successfully",});
 });
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
@@ -37,15 +38,10 @@ const getAllUser = catchAsync(async (req, res) => {
 
 const getUserByID = async (req, res) => {
   // Check for validation errors
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const userId = req.params.id;
-
   try {
+    const userId = req.params.id;
     const user = await userService.getUserById(userId);
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -53,6 +49,7 @@ const getUserByID = async (req, res) => {
     // Customize the response as needed
     return res.status(200).json({ user });
   } catch (error) {
+    console.error('Error fetching user by ID:', error);
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };

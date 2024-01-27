@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
-const { User, Shop, ShopParam, ApplicationLanguage, Booking } = require('../models');
+const { User} = require('../models');
 const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
@@ -40,19 +40,28 @@ const updateUserById = async (req) => {
 const getAllUser = async () => {
   return User.findAll({
     where: {  status: true },
-    // include:  Booking 
+    //  include:  Booking 
   });
 };
-const getUserById = async (userId) => {
-  try {
-    const user = await User.findByPk({
-      where: { email, status: true }
-    });
-    return user;
-  } catch (error) {
-    throw new Error('Error fetching user by ID');
-  }
-};
+
+  const getUserById = async (userId) => {
+    try {
+      const user = await User.findByPk(userId);
+  
+      if (!user) {
+        console.log('User not found for id', userId);
+        return null; // or handle the case accordingly
+      }
+  
+      console.log('User found:', user);
+      return user;
+    } catch (error) {
+      console.error('Error fetching user by ID:', error);
+      throw new Error('Error fetching user by ID');
+    }
+  };
+
+
 
 module.exports = {
   createUser,

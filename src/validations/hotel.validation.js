@@ -2,22 +2,19 @@
 const Joi = require('joi');
 
 const createHotelSchema = {
-  // Existing validation
-  // ...
 
-  // New validation
   address: Joi.string().required(),
   city: Joi.string().required(),
   state: Joi.string().required(),
   country: Joi.string().required(),
-  pincode: Joi.string().required(),
+  pincode: Joi.number().required(),
   distanceFromAirport: Joi.string().required(),
   distanceFromCenter: Joi.string().required(),
   location: Joi.string().required(),
   numberOfRoom: Joi.number().integer().required(),
   startingPrice: Joi.number().integer().required(),
-  checkInTime: Joi.string().required(), // Assuming it's a string, adjust if needed
-  checkOutTime: Joi.string().required(), // Assuming it's a string, adjust if needed
+  checkInTime: Joi.date().iso().required(), // Adjust format based on your requirement
+  checkOutTime: Joi.date().iso().required(), // Assuming it's a string, adjust if needed
   description: Joi.string().required(),
   selectFacility: Joi.array().items(Joi.string()).required(),
   name:Joi.string().required(),

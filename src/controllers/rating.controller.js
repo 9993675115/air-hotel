@@ -3,9 +3,42 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const { ratingService } = require('../services');
 
+// const createRating = catchAsync(async (req, res) => {
+//   try{
+//   const ratings = await ratingService.createRating(req.body);
+//   res.status(httpStatus.CREATED).send({ ratings });
+//   }
+//   catch (error) {
+//     console.error('Error ratings by id:', error);
+//     return res.status(500).json({ error: error });
+//   }
+// });
+
 const createRating = catchAsync(async (req, res) => {
-  const ratings = await ratingService.createRating(req.body);
-  res.status(httpStatus.CREATED).send({ ratings });
+  try {
+    const ratings = await ratingService.createRating(req.body);
+
+    // Assuming createRating returns a boolean or the created rating object
+    if (ratings) {
+      res.status(httpStatus.CREATED).send({ ratings });
+    } else {
+      // Handle the case where rating creation fails for some reason
+      return res.status(400).json({ error: "Failed to create the rating." });
+    }
+  } catch (error) {
+    console.error('Error creating rating:', error);
+
+    if (error.name === 'ValidationError') {
+      // Handle validation errors (e.g., missing required fields)
+      return res.status(400).json({ error: 'Validation error. Please provide all required fields.' });
+    } else if (error.name === 'SequelizeUniqueConstraintError') {
+      // Handle unique constraint violation (duplicate entry)
+      return res.status(400).json({ error: 'Rating with the same details already exists.' });
+    } else {
+      // Handle other types of errors
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 });
 
 const getRatingById = async (req, res) => {

@@ -3,10 +3,36 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const bookingDetailsService  = require('../services');
 
+// const createBookingDetail = catchAsync(async (req, res) => {
+//   try{
+//   const BookingDetail = await bookingDetailsService.bookingDetailsService.createBookingDetails(req.body);
+//   res.status(httpStatus.CREATED).send({ BookingDetail });
+//   }
+//   catch (error) {
+//     console.error('Error BookingDetail  by id:', error);
+//     return res.status(500).json({ error: error });
+//   }
+// });
 const createBookingDetail = catchAsync(async (req, res) => {
-  const BookingDetail = await bookingDetailsService.bookingDetailsService.createBookingDetails(req.body);
-  res.status(httpStatus.CREATED).send({ BookingDetail });
+  try {
+    const bookingDetail = await bookingDetailsService.bookingDetailsService.createBookingDetails(req.body);
+    res.status(httpStatus.CREATED).send({ bookingDetail });
+  } catch (error) {
+    console.error('Error creating booking detail:', error);
+
+    if (error.name === 'ValidationError') {
+      // Handle validation errors (e.g., missing required fields)
+      return res.status(400).json({ error: 'Validation error. Please provide all required fields.' });
+    } else if (error.name === 'SequelizeUniqueConstraintError') {
+      // Handle unique constraint violation (duplicate entry)
+      return res.status(400).json({ error: 'Booking detail with the same details already exists.' });
+    } else {
+      // Handle other types of errors
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 });
+
 const getBookingDetailById = async (req, res) => {
   try {
     const { bookingDetailId } = req.params;
