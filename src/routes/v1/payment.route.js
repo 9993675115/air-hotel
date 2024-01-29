@@ -11,10 +11,12 @@ router.post('/createPayment', validate(paymentValidation.createPayment), payment
 // GET /api/payments/:paymentId
 router.post('/:paymentId', validate(paymentValidation.getPaymentValidation), paymentController.getPaymentById);
 
-router.get('/', paymentController.getAllPayment);
+router.get('/', paymentController.getPaymentById);
+
+router.get('/:paymentId', paymentController.getAllPayment);
 
 // PUT /api/payments/:paymentId
-router.put('/:paymentId', validate(paymentValidation.updatePayment), paymentController.updatePayment);
+router.put('/:paymentId', validate(paymentValidation.updatePaymentValidation), paymentController.updatePayment);
 
 // DELETE /api/payments/:paymentId
 router.delete('/:paymentId', paymentController.deletePayment);

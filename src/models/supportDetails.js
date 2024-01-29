@@ -5,6 +5,11 @@ module.exports = (sequelize) => {
     supportId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      type: DataTypes.INTEGER,
+    references: {
+      model: 'Support', 
+      key: 'id'
+    }
     },
     description: {
       type: DataTypes.TEXT,
@@ -22,8 +27,13 @@ module.exports = (sequelize) => {
   {
     tableName: 'SupportDetails',
     freezeTableName: true
-  }
-  );
+  });
   
+  SupportDetail.associate = function(models) {
+    SupportDetail.belongsTo(models.Support, {
+      foreignKey: 'supportId', // Correct foreign key
+    });
+  }
+
   return SupportDetail;
 };

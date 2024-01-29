@@ -9,7 +9,7 @@ const createPayment = catchAsync(async (req, res) => {
 });
 const getPaymentById = async (req, res) => {
   try {
-    const { paymentId } = req.params; // Assuming bookingId is in req.params
+    const paymentId = req.params.paymentId; // Assuming bookingId is in req.params
 
     const data = await paymentService.getPaymentById(paymentId);
 
@@ -30,7 +30,7 @@ const getPaymentById = async (req, res) => {
   
   const updatePayment = async (req, res) => {
     try {
-      const paymentId = req.params;
+      const {paymentId} = req.params;
       const updatedData = req.body;
       const updatePayment = await paymentService.updatePayment(paymentId, updatedData);
       if (updatePayment) {

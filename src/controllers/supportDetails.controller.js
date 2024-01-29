@@ -14,7 +14,7 @@ const getSupportDetailById = catchAsync(async (req, res) => {
 });
 
 const getAllSupportDetail = catchAsync(async (req, res) => {
-  const supportDetails = await supportDetailService.getAllSupportDetails();
+  const supportDetails = await supportDetailsService.getAllSupportDetails();
   res.status(httpStatus.OK).send({ supportDetails });
 });
 

@@ -24,5 +24,12 @@ module.exports = (sequelize,DataTypes) => {
     freezeTableName: true
   });
 
+  Support.associate = function(models) {
+    Support.hasOne(models.SupportDetail, {
+        foreignKey: 'id',
+       // as: 'categoryId'
+    });
+  };
+
   return Support;
 };

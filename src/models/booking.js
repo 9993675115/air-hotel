@@ -88,5 +88,13 @@ Booking.associate = function(models) {
   },
   );
 };
+
+Booking.associate = function(models) {
+  Booking.hasOne(models.Payment, {
+    foreignKey: 'id',
+   // as: 'categoryId'
+});
+};
+
   return Booking;
 };

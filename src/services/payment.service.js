@@ -4,25 +4,25 @@ const bcrypt = require('bcryptjs');
 const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
-const { Payments } = require('../models');
+const { Payment } = require('../models');
 
 const createPayment = async (_userBody) => {
   const userBody = _userBody;
   console.log("-----------",userBody)
-  return Payments.create(userBody);
+  return Payment.create(userBody);
 };
 const getAllPayment = async () => {
   try {
-    const data = await Payments.findAll();
+    const data = await Payment.findAll();
     return data;
   } catch (error) {
     console.error('Error retrieving users:', error);
     throw error;
   }
 };
-const getPaymentById = async () => {
+const getPaymentById = async (paymentId) => {
   try {
-    const data = await Payments.findAll();
+    const data = await Payment.findByPk(paymentId);
     return data;
   } catch (error) {
     console.error('Error retrieving users:', error);
@@ -31,25 +31,13 @@ const getPaymentById = async () => {
 }
 
 const updatePayment = async (paymentId, updatedData) => {
-  try {
-    const findData = await User.findOne({
-      where: { paymentId: paymentId }
-    });
-    if (findData) {
-      await Payments.update(updatedData, { where: { paymentId: paymentId } });
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error('Error updating user by id:', error);
-    throw error;
-  }
+  await Payment.update(updatedData, { where: { paymentId } });
+  return updatePayment(paymentId);
 };
 
 const deletePayment = async (paymentId) => {
   try {
-    const deletedRowsCount = await Booking.destroy({
+    const deletedRowsCount = await Payment.update({status:false},{
       where: { paymentId: paymentId }
     });
     return deletedRowsCount;
