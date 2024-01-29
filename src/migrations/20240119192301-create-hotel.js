@@ -73,6 +73,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
+      image: {
+        allowNull: false,
+        type: Sequelize.JSON
+      },
       description: {
         allowNull: false,
         type: Sequelize.TEXT

@@ -30,19 +30,23 @@ const getPaymentById = async (req, res) => {
   
   const updatePayment = async (req, res) => {
     try {
-      const {paymentId} = req.params;
+      const { paymentId } = req.params;
       const updatedData = req.body;
-      const updatePayment = await paymentService.updatePayment(paymentId, updatedData);
-      if (updatePayment) {
-        res.status(200).send({ data: updatedData, message: ' updated successfully' });
+  
+      // Renamed the variable holding the result to avoid confusion
+      const updatedPaymentResult = await paymentService.updatePayment(paymentId, updatedData);
+  
+      if (updatedPaymentResult) {
+        res.status(200).send({ data: updatedData, message: 'Updated successfully' });
       } else {
-        res.status(404).send({ message:' not found', status: 0 });
+        res.status(404).send({ message: 'Not found', status: 0 });
       }
     } catch (error) {
-      console.error('Error updating :', error);
+      console.error('Error updating:', error);
       res.status(500).send({ message: 'Internal server error', status: -1 });
     }
   };
+  
   
   const deletePayment = async (req, res) => {
     const deletePayment = await paymentService.deletePayment(querry);

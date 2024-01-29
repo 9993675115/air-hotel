@@ -14,7 +14,8 @@ const createHotelSchema = {
   numberOfRoom: Joi.number().integer().required(),
   startingPrice: Joi.number().integer().required(),
   checkInTime: Joi.date().iso().required(), // Adjust format based on your requirement
-  checkOutTime: Joi.date().iso().required(), // Assuming it's a string, adjust if needed
+  checkOutTime: Joi.date().iso().required(),
+  image: Joi.object(), // Assuming it's a string, adjust if needed
   description: Joi.string().required(),
   selectFacility: Joi.array().items(Joi.string()).required(),
   name:Joi.string().required(),
@@ -40,6 +41,7 @@ const updateHotelSchema = Joi.object({
   checkInTime: Joi.string(), // Assuming it's a string, adjust if needed
   checkOutTime: Joi.string(), // Assuming it's a string, adjust if needed
   description: Joi.string(),
+  image: Joi.object(), 
   selectFacility: Joi.array().items(Joi.string()),
   name:Joi.string(),
   status:Joi.boolean(),

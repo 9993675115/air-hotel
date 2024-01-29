@@ -11,9 +11,9 @@ router.post('/createPayment', validate(paymentValidation.createPayment), payment
 // GET /api/payments/:paymentId
 router.post('/:paymentId', validate(paymentValidation.getPaymentValidation), paymentController.getPaymentById);
 
-router.get('/', paymentController.getPaymentById);
+router.get('/', paymentController.getAllPayment);
 
-router.get('/:paymentId', paymentController.getAllPayment);
+router.get('/:paymentId', paymentController.getPaymentById);
 
 // PUT /api/payments/:paymentId
 router.put('/:paymentId', validate(paymentValidation.updatePaymentValidation), paymentController.updatePayment);

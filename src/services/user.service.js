@@ -11,8 +11,8 @@ const getExistingEmais = async (email) => {
 };
 
 const createUser = async (_userBody) => {
+  console.log("pppppppppppppppppppp",_userBody)
   const userBody = _userBody;
-  console.log("ppppppppppppppppppppppppppppp",userBody)
   if (await getExistingEmais(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, messages.EMAIL_ALREADY_EXISTS);
   }
@@ -44,6 +44,7 @@ const getAllUser = async () => {
   });
 };
 
+
   const getUserById = async (userId) => {
     try {
       const user = await User.findByPk(userId);
@@ -61,7 +62,22 @@ const getAllUser = async () => {
     }
   };
 
-
+  const updateUserByID = async (id, updatedData)=>{
+   const data = await User.update(updatedData, { where: { id } });
+  // return (id);
+  return data
+  };
+  const deleteUser = async (id) => {
+    try {
+      const deletedRowsCount = await User.update({status:false},{
+        where: { id }
+      });
+      return deletedRowsCount;
+    } catch (error) {
+      console.error('Error deleting user by id:', error);
+      throw error;
+    }
+  };
 
 module.exports = {
   createUser,
@@ -70,5 +86,7 @@ module.exports = {
   getUserWithSecretFieldsById,
   updateUserById,
   getAllUser,
-  getUserById
+  getUserById,
+  updateUserByID,
+  deleteUser
 };

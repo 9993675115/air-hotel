@@ -28,11 +28,23 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.JSON // Assuming image is stored as JSON
       },
-      featureImage: {
-        type: DataTypes.JSON // Assuming featureImage is stored as JSON
-      },
+      // featureImage: {
+      //   type: DataTypes.JSON // Assuming featureImage is stored as JSON
+      // },
       companyName: {
         type: DataTypes.STRING
+      },
+      pincode: {
+        type: DataTypes.INTEGER,
+        // defaultValue: 0
+      },
+      city: {
+        type: DataTypes.STRING,
+        // defaultValue: 0
+      },
+      document: {
+        type: DataTypes.STRING,
+        // defaultValue: 0
       },
       status: {
         type: DataTypes.BOOLEAN,
@@ -57,25 +69,22 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   );
-  User.associate = function(models) {
+ 
+  User.associate = function (models) {
     User.hasMany(models.Booking, {
-        foreignKey: 'userId'
+      foreignKey: 'userId',
     });
-  };
-  User.associate = function(models) {
+
     User.hasOne(models.Rating, {
-        foreignKey: 'id',
-        // as: 'categoryId'
+      foreignKey: 'id',
+      // as: 'categoryId' // Uncomment this line if you have an alias for the association
     });
-  };
 
-
-  User.associate = function(models) {
     User.hasOne(models.Payment, {
       foreignKey: 'id',
-     // as: 'categoryId'
-  });
-};
+      // as: 'categoryId' // Uncomment this line if you have an alias for the association
+    });
+  };
 
    return User;
 };

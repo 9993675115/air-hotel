@@ -71,6 +71,10 @@ const Hotel = sequelize.define('Hotel', {
     allowNull: false,
     type: DataTypes.DATE
   },
+  image: {
+    type: DataTypes.JSON,
+    defaultValue: true,
+  },
   description: {
     allowNull: false,
     type: DataTypes.TEXT

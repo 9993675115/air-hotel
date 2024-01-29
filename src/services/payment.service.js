@@ -31,9 +31,26 @@ const getPaymentById = async (paymentId) => {
 }
 
 const updatePayment = async (paymentId, updatedData) => {
-  await Payment.update(updatedData, { where: { paymentId } });
-  return updatePayment(paymentId);
+  try {
+    // Assuming Payment is your Sequelize model
+    const [rowsUpdated, [updatedPayment]] = await Payment.update(updatedData, {
+      where: { paymentId },
+      returning: true, // This makes sure that the updated record is returned
+    });
+
+    if (rowsUpdated > 0) {
+      return updatedPayment;
+    } else {
+      // Handle the case when no rows are updated
+      throw new Error('Payment not found');
+    }
+  } catch (error) {
+    // Handle other errors, e.g., database errors
+    console.error('Error updating payment:', error);
+    throw error;
+  }
 };
+
 
 const deletePayment = async (paymentId) => {
   try {

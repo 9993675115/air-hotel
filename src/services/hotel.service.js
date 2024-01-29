@@ -39,9 +39,9 @@ const getAllHotels = async () => {
   }
 };
 
-const updateHotel = async (id, data) => {
-  await Hotel.update(data, { where: { id } });
-  return getHotelById(id);
+const updateHotel = async (id, updateData) => {
+  const data  =  await Hotel.update(updateData, { where: { id } });
+  return data;
 };
 
 const deleteHotel = async (id) => {

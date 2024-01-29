@@ -8,6 +8,7 @@ const fs = require('fs');
 // const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
+  console.log('bbbbbbbbbbbbbbbbbbbb',req.body);
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
   res.status(httpStatus.CREATED).send({ user ,tokens, message:"register Successfully",});
@@ -23,6 +24,27 @@ const logout = catchAsync(async (req, res) => {
   await authService.logout(req.body.refreshToken);
   res.status(httpStatus.OK).send({message:"logout successfully"});
 });
+
+const updateUserByID = async (req, res)=> {
+  try {
+    // Extracting bookingId from req.params
+    const { id } = req.params;
+
+    // Assuming you have validated your req.body using Joi or other validation middleware
+    const updatedData = req.body;
+
+    const updateUserByID = await userService.updateUserByID(id, updatedData);
+
+    if (updateUserByID) {
+      res.status(200).send({ data: updatedData, message: 'Updated successfully' });
+    } else {
+      res.status(404).send({ message: 'Not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error updating :', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
+  }
+};
 
 const refreshTokens = catchAsync(async (req, res) => {
   const tokens = await authService.refreshAuth(req.body.refreshToken);
@@ -92,6 +114,16 @@ const uploadImage = (req, res) => {
     return res.status(200).json({ message: 'File uploaded successfully',filename });
   });
 };
+const deleteUser = async (req, res) => {
+  // Implementation to delete booking by ID
+  const idere = req.params.id;
+  const deleteUser = await userService.deleteUser(idere);
+  if (deleteUser) {
+    res.status(httpStatus.OK).send({ message: ' deleted successfully' });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in  delete' });
+  }
+};
 
 module.exports = {
   register,
@@ -101,5 +133,7 @@ module.exports = {
   generatePassword,
   getAllUser,
   getUserByID,
-  uploadImage
+  uploadImage,
+  updateUserByID,
+  deleteUser
 };

@@ -15,6 +15,9 @@ router.post('/refresh-tokens', validate(authValidation.refreshTokens), authContr
 router.get('/generate-password', validate(authValidation.generatePassword), authController.generatePassword);
 router.get('/user',  authController.getAllUser);
 router.get('/:id', validate(authValidation.getUserById), authController.getUserByID);
+router.put('/:id', validate(authValidation.update), authController.updateUserByID);
+router.delete('/:id',  authController.deleteUser);
+
 router.post('/documentImage', upload.single('image'), authController.uploadImage);
 
 module.exports = router;

@@ -12,9 +12,11 @@ const register = {
     Dob: Joi.date().optional(), // Assuming Dob is optional and should be a date
     country: Joi.string().optional(), // Assuming country is optional
     image: Joi.object().optional(), // Assuming image is optional and should be an object
-    featureImage: Joi.object().optional(), // Assuming featureImage is optional and should be an object
     companyName: Joi.string().optional(),
-    contact: Joi.number().required(), // Assuming companyName is optional
+    contact: Joi.number().required(),
+    pincode: Joi.number(),
+    city: Joi.string(), 
+    document: Joi.string(),
   })
 };
 
@@ -48,6 +50,20 @@ const getUserById = {
     id: Joi.number().required(),
   }),
 };
+const update = {
+  body: Joi.object().keys({
+    firstName: Joi.string().required(), // Assuming firstName is optional
+    lastName: Joi.string().required(), // Assuming lastName is optional
+    Dob: Joi.date().required(), // Assuming Dob is  and should be a date
+    country: Joi.string().required(), // Assuming country is 
+    image: Joi.object(), // Assuming image is  and should be an object
+    companyName: Joi.string().required(),
+    contact: Joi.number().required(),
+    pincode: Joi.number().required(),
+    city: Joi.string().required(),
+    document: Joi.string(),
+  })
+};
 
 module.exports = {
   login,
@@ -55,5 +71,6 @@ module.exports = {
   refreshTokens,
   register,
   generatePassword,
-  getUserById
+  getUserById,
+  update
 };

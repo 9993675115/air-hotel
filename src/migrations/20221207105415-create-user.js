@@ -46,6 +46,15 @@ module.exports = {
       contact:{
         type: Sequelize.BIGINT
       },
+      pincode: {
+        type: Sequelize.INTEGER
+      },
+      city: {
+        type: Sequelize.STRING
+      },
+      document: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
