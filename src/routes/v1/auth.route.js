@@ -19,5 +19,11 @@ router.put('/:id', validate(authValidation.update), authController.updateUserByI
 router.delete('/:id',  authController.deleteUser);
 
 router.post('/documentImage', upload.single('image'), authController.uploadImage);
+//  router.post('/documentImages', upload.array('files', 5), authController.uploadMultipleImages);
+
+
+
+// router.post('/documentImage', upload.multipal('featureImage'), authController.uploadImage);
+
 
 module.exports = router;

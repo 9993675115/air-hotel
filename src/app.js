@@ -64,6 +64,10 @@ app.use('/v1', routes);
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// app.post("/images", uploads.array("images"), function(req, res) {
+//   res.json({ status: "ok", message: "Pictures uploaded" });
+// });
+
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));

@@ -128,6 +128,33 @@ const uploadImage = async (req, res) => {
   }
 };
 
+const uploadMultipleImages = async (req, res) => {
+  try {
+    // Call multer middleware to handle file uploads
+    upload(req, res, (err) => {
+      if (err) {
+        return res.status(500).send(`Error when trying to upload images: ${err}`);
+      }
+
+      // Check if files were uploaded
+      if (req.files.length === 0) {
+        return res.status(400).send({ message: 'You must select at least one file.' });
+      }
+
+      // Extract file names from req.files
+      const images = req.files.map((file) => file.filename);
+
+      res.send({ message: 'Images uploaded successfully', images });
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(`Error when trying to upload images: ${error}`);
+  }
+};
+
+
+
+
 const deleteUser = async (req, res) => {
   // Implementation to delete booking by ID
   const idere = req.params.id;
@@ -149,5 +176,6 @@ module.exports = {
   getUserByID,
   uploadImage,
   updateUserByID,
-  deleteUser
+  deleteUser,
+  uploadMultipleImages
 };
