@@ -8,7 +8,6 @@ const fs = require('fs');
 // const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
-  console.log('bbbbbbbbbbbbbbbbbbbb',req.body);
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user);
   res.status(httpStatus.CREATED).send({ user ,tokens, message:"register Successfully",});
@@ -78,42 +77,6 @@ const getUserByID = async (req, res) => {
   }
 };
 
-// const uploadImage = async (req, res) => {
-//   console.log("popopopopoppop",req.file.fileName)
-//   try {
-//     const image = req.file.fileName;
-//     if (req.file === undefined) {
-//       return res.status(401).send({ message: `You must select a file.` });
-//     }
-//     res.send({ message: 'image uploaded sucessfully', image });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).send(`Error when trying upload images: ${error}`);
-//   }
-// };
-
-
-// authController.js
-
-// Assuming you have already imported necessary modules like multer, fs, etc.
-
-// const uploadImage = (req, res) => {
-//   console.log("!!!!!!!!!!!!",req.file)
-//   if (!req.file) {
-//     return res.status(400).json({ error: 'No file uploaded' });
-//   }
-//   const filename = req.file.filename; // Accessing the file information
-
-//   const image = req.file; // Accessing the file information
-//   const imageName = image; 
-//   const uploadDir = './uploads/';
-//   fs.rename(image.path, uploadDir + imageName, function(err) {
-//     if (err) {
-//       return res.status(500).json({ error: 'Error saving the file' });
-//     }
-//     return res.status(200).json({ message: 'File uploaded successfully',filename });
-//   });
-// };
 
 const uploadImage = async (req, res) => {
   try {
@@ -128,24 +91,23 @@ const uploadImage = async (req, res) => {
   }
 };
 
-const uploadMultipleImages = async (req, res) => {
+const uploadImages = async (req, res) => {
   try {
-    // Call multer middleware to handle file uploads
-    upload(req, res, (err) => {
-      if (err) {
-        return res.status(500).send(`Error when trying to upload images: ${err}`);
-      }
+    const images = req.files;
 
-      // Check if files were uploaded
-      if (req.files.length === 0) {
-        return res.status(400).send({ message: 'You must select at least one file.' });
-      }
+    if (!images || images.length === 0) {
+      return res.status(400).send('You must select at least one file.');
+    }
 
-      // Extract file names from req.files
-      const images = req.files.map((file) => file.filename);
-
-      res.send({ message: 'Images uploaded successfully', images });
+    const fileInformation = images.map((file) => {
+      return file.filename.trim();
     });
+    // const fileInformation= image.map((item)=>{
+    // return item.filename
+    // })
+    // console.log("file===========",image);
+
+    res.send({ message: 'Images uploaded successfully', fileInformation: fileInformation });
   } catch (error) {
     console.error(error);
     return res.status(500).send(`Error when trying to upload images: ${error}`);
@@ -177,5 +139,5 @@ module.exports = {
   uploadImage,
   updateUserByID,
   deleteUser,
-  uploadMultipleImages
+  uploadImages
 };

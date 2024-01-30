@@ -23,7 +23,6 @@ router.post('/documentImage', upload.single('image'), authController.uploadImage
 
 
 
-// router.post('/documentImage', upload.multipal('featureImage'), authController.uploadImage);
-
+router.post('/images', upload.array('image', 15), authController.uploadImages);
 
 module.exports = router;
