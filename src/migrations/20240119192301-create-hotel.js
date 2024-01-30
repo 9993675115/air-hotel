@@ -75,8 +75,11 @@ module.exports = {
       },
       image: {
         allowNull: false,
-        type: Sequelize.JSON
+        type: Sequelize.STRING
       },
+      featureImage: {
+          type: Sequelize.JSON 
+        },
       description: {
         allowNull: false,
         type: Sequelize.TEXT

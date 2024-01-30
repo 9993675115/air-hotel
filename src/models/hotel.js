@@ -31,6 +31,9 @@ const Hotel = sequelize.define('Hotel', {
       key: 'id'
     } // Adjust the data type based on your requirements
   },
+  featureImage: {
+    type: DataTypes.JSON 
+  },
   state: {
     allowNull: false,
     type: DataTypes.STRING
@@ -72,7 +75,7 @@ const Hotel = sequelize.define('Hotel', {
     type: DataTypes.DATE
   },
   image: {
-    type: DataTypes.JSON,
+    type: DataTypes.STRING,
     defaultValue: true,
   },
   description: {
