@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
-const hotelServices  = require('../services');
+const hotelServices = require('../services');
 
 // const createHotel = async (req, res) => {
 //   try{
@@ -50,8 +50,19 @@ const getHotelById = async (req, res) => {
 };
 const getAllHotels = async (req, res) => {
   try {
-    const hotels = await  hotelServices.hotelService.getAllHotels();
-    res.status(httpStatus.OK).json(hotels);
+
+    if (!req || !req.query) {
+      throw new Error('Invalid request object');
+    }
+
+    // Extracting query parameters
+    const { page = 1, limit = 10, search } = req.query;
+
+    // Call the service function with the correct parameters
+    const data = await hotelServices.hotelService.getAllHotels(search, { page, limit });
+
+    // Return the data as needed
+    res.json({ data });
   } catch (error) {
     console.error('Error getting all hotels:', error);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
@@ -80,7 +91,7 @@ const updateHotel = async (req, res) => {
 };
 
 const deleteHotel = async (req, res) => {
-  console.log('req----------------------',req.params)
+  console.log('req----------------------', req.params)
   const idToDelete = req.params.id;
 
   try {
@@ -103,9 +114,9 @@ const deleteHotel = async (req, res) => {
 
 
 module.exports = {
-    createHotel,
-    getHotelById,
-    updateHotel,
-    deleteHotel,
-    getAllHotels
+  createHotel,
+  getHotelById,
+  updateHotel,
+  deleteHotel,
+  getAllHotels
 };

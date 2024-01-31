@@ -5,6 +5,8 @@ const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 
+const { Sequelize } = require('sequelize');
+
 const getExistingEmais = async (email) => {
   logger.info(email);
   return User.findOne({ where: { email, status: true } });
@@ -35,21 +37,91 @@ const getUserWithSecretFields = async (email) => {
   return User.scope('withSecretColumns').findOne({ where: { email } });
 };
 const getUserWithSecretFieldsById = async (id) => {
-  return User.scope('withSecretColumns').findOne({ where: { id } });
-};
-// const updateUserById = async (req) => {
-//   const parsedSett =JSON.parse(req.body.settings)
-//   const userId = req.user?.dataValues.id? req.user.dataValues.id:1;
-//   return User.update( { settings: parsedSett },
-//   { where: { id: userId } });
-// };
-const getAllUser = async () => {
-  return User.findAll({
-    where: {  status: true },
-    //  include:  Booking 
-  });
+  try {
+    const user = await User.scope('withSecretColumns').findOne({
+      where: { id: id }
+    });
+    return user;
+  } catch (error) {
+    console.error('Error retrieving user with secret fields by id:', error);
+    throw error;
+  }
 };
 
+const getAllUser = async (query, options) => {
+  try {
+    if(query){
+      const limit = Number(options.limit);
+    const offset = options.page ? limit * (options.page - 1) : 0;
+
+    // Ensure the query is a string
+    const searchString = query ? query.toString() : '';
+    
+
+    // Define the where clause for search
+    const whereClause = searchString ? {
+      [Sequelize.Op.or]: {
+        firstName: { [Sequelize.Op.iLike]: `%${searchString}%` },
+        lastName: { [Sequelize.Op.iLike]: `%${searchString}%` },
+        email: { [Sequelize.Op.iLike]: `%${searchString}%` },
+        // Add more fields as needed
+      }
+    } : {};
+
+    // Log relevant variables
+
+    const data = await User.findAndCountAll({
+      where: whereClause,
+      order: [['updatedAt', 'DESC']],
+      limit,
+      offset,
+    });
+
+    return data;
+    }
+    else{
+    const data = User.findAll({
+        where: {  status: true },
+        //  include:  Booking
+      });
+      return data;
+    }
+    
+  } catch (error) {
+    console.error('Error getting users:', error);
+    throw error;
+  }
+};
+
+
+// const getUserBySearch = async (query, options) => {
+//   try {
+//     const limit = Number(options.limit);
+//     const offset = options.page ? limit * (options.page - 1) : 0;
+
+//     if (query && query.search) {
+//       query.search = decodeURIComponent(query.search);
+//       query.search = query.search.replace(/\"%/g, '').replace(/%\"/g, ''); // Remove extra quotes and percent signs.
+//     }
+//     if (query == null || options == null) {
+//     const data = await User.findAndgetAllUser({
+//       where: { status: true },
+//       limit: limit,}); // Pass the query conditions as the first argument
+//     return data;
+//     }
+//     else {
+//       const data = await User.findAndgetAllUser({
+//         where: { ...query, status: true },
+//         limit: limit,
+//         offset: offset
+//       });
+//       return data;
+//     }
+//   } catch (error) {
+//     console.error('Error getting users:', error);
+//     throw error;
+//   }
+// }
 
   const getUserById = async (id) => {
     try {
@@ -71,18 +143,17 @@ const getAllUser = async () => {
 
   const updateUserByID = async (id, newData) => {
     try {
-      console.log('check details-------------------------------', id, 'newData---------------------', newData);
-      const findData = await User.findOne({
-        where: { id: id }
-      });
-      if (findData) {
-        return User.update(newData, { where: { id: id } });
+      const user = await User.findByPk(id);
+  
+      if (user) {
+        await user.update(newData);
+        return user;
       } else {
-        return;
+        return null;
       }
-    } catch (err) {
-      console.log(err);
-      return;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      throw error;
     }
   };
 
@@ -107,5 +178,6 @@ module.exports = {
   getAllUser,
   getUserById,
   updateUserByID,
-  deleteUser
+  deleteUser,
+  // getUserBySearch
 };

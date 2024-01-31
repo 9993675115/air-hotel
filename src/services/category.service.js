@@ -8,6 +8,8 @@ const logger = require('../config/logger');
 // services/categoryService.js
 const {Category} = require('../models');
 
+const { Sequelize } = require('sequelize');
+
 // You can add business logic or additional database interactions here if needed
 
 const createCategory = async (_userBody) => {
@@ -23,21 +25,49 @@ const createCategory = async (_userBody) => {
     }
   };
  
-  const getAllCategories = async () => {
+  const getAllCategories = async (query, options) => {
     try {
-      const data = await Category.findAll({
-        where: {
-          status: true,
-          // isActive: true,
-        },
-      });
-      return data;
+      if(query){
+        const limit = Number(options.limit);
+        const offset = options.page ? limit * (options.page - 1) : 0;
+    
+        // Ensure the query is a string
+        const searchString = query ? query.toString() : '';
+        
+    
+        // Define the where clause for search
+        const whereClause = searchString ? {
+          [Sequelize.Op.or]: {
+            name: { [Sequelize.Op.iLike]: `%${searchString}%` },
+            // Add more fields as needed
+          }
+        } : {};
+    
+        // Log relevant variables
+    
+        const data = await Category.findAndCountAll({
+          where: whereClause,
+          order: [['updatedAt', 'DESC']],
+          limit,
+          offset,
+        });
+    
+        return data;
+      }else{
+        const data = await Category.findAll({
+          where: {
+            status: true,
+            // isActive: true,
+          },
+        });
+        return data;
+      }
+     
     } catch (error) {
-      console.error('Error getting categories:', error);
+      console.error('Error getting users:', error);
       throw error;
     }
   };
-  
   
   const getCategoryById = async (categoryId) => {
     try {

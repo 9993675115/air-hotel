@@ -19,6 +19,8 @@ router.put('/:id', validate(authValidation.update), authController.updateUserByI
 router.delete('/:id',  authController.deleteUser);
 router.post('/resetPassword', validate(authValidation.resetPassword), authController.resetPassword);
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
+router.post('/change-password', auth(), validate(authValidation.changePassword), authController.changePassword);
+// router.get('/search', authController.getUserBySearch)
 
 router.post('/documentImage', upload.single('image'), authController.uploadImage);
 //  router.post('/documentImages', upload.array('files', 5), authController.uploadMultipleImages);

@@ -5,6 +5,7 @@ const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 const  {Hotel, Category} = require('../models');
+const { Sequelize, Op } = require('sequelize');
 
 const createHotel = async (hotelData) => {
   try {
@@ -26,13 +27,51 @@ const getHotelById = async (id) => {
     throw error;
   }
 };
-const getAllHotels = async () => {
+const getAllHotels = async (query, options) => {
   try {
+
+    if(query){
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
+  
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+      
+  
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          name: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          city: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          categoryId:  { [Op.eq]: searchString },
+          pincode: { [Op.eq]: searchString },
+          // pincode: { [Sequelize.Op.iLike]: searchString },
+          startingPrice: { [Op.eq]: searchString },
+          state: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          address: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          selectFacility: { [Sequelize.Op.overlap]: [searchString] },
+          // Add more fields as needed
+        }
+      } : {};
+  
+      // Log relevant variables
+  
+      const data = await Hotel.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+        include: Category
+      });
+  
+      return data;
+    }
+    else{
     const hotels = await Hotel.findAll({
-      where: {},
       include: Category
     });
     return hotels;
+  }
   } catch (error) {
     console.error('Error getting all hotels:', error);
     throw error;

@@ -7,13 +7,24 @@ const categoryServices = require('../services/category.service');
 
 
 const getAllCategories = async (req, res) => {
-  try {
-    const category = await categoryServices.getAllCategories() ;
-    res.status(httpStatus.OK).json(category);
-  } catch (error) {
-    console.error('Error getting all category:', error);
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
-  }
+    try {
+      // Ensure req object and its properties are defined
+      if (!req || !req.query) {
+        throw new Error('Invalid request object');
+      }
+  
+      // Extracting query parameters
+      const { page = 1, limit = 10, search } = req.query;
+  
+      // Call the service function with the correct parameters
+      const data = await categoryServices.getAllCategories(search, { page, limit });
+  
+      // Return the data as needed
+      res.json({ data });
+    } catch (error) {
+      console.error('Error in getAllCategory controller:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
 };
 
 // Example in your route or controller

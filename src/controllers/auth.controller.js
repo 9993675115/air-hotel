@@ -54,10 +54,33 @@ const generatePassword = catchAsync(async (req, res) => {
   const password = await bcrypt.hash(req.query.password, 8);
   res.send({ password });
 });
-const getAllUser = catchAsync(async (req, res) => {
-  const data = await userService.getAllUser();
-  res.send({ data });
-});
+// const getAllUser = catchAsync(async (req, res) => {
+//   const data = await userService.getAllUser();
+//   res.send({ data });
+// });
+
+const getAllUser = async (req, res) => {
+  try {
+    // Ensure req object and its properties are defined
+    if (!req || !req.query) {
+      throw new Error('Invalid request object');
+    }
+
+    // Extracting query parameters
+    const { page = 1, limit = 10, search } = req.query;
+
+    // Call the service function with the correct parameters
+    const data = await userService.getAllUser(search, { page, limit });
+
+    // Return the data as needed
+    res.json({ data });
+  } catch (error) {
+    console.error('Error in getAllUser controller:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 
 const getUserByID = async (req, res) => {
   // Check for validation errors
@@ -134,6 +157,19 @@ const forgotPassword = catchAsync(async (req, res) => {
   res.send({ message: 'Email sent successfully!!' });
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  const userWithSecretFields = await userService.getUserWithSecretFieldsById(req.user.dataValues.id);
+  const password = req.body.oldPassword;
+  if (!(await bcrypt.compare(password, userWithSecretFields.password))) {
+    res.status(400).send({ message: 'Incorrect Old password!' });
+  } else {
+    const userBody = {
+      password: await bcrypt.hash(req.body.newPassword, 8)
+    };
+    await userService.updateUserByID(req.user.dataValues.id, userBody);
+  }
+  res.status(httpStatus.OK).send({ message: 'Password Changed Successfully' });
+});
 
 const deleteUser = async (req, res) => {
   // Implementation to delete booking by ID
@@ -159,5 +195,7 @@ module.exports = {
   deleteUser,
   uploadImages,
   resetPassword,
-  forgotPassword
+  forgotPassword,
+  changePassword,
+  // getUserBySearch
 };

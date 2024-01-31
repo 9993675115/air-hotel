@@ -80,6 +80,13 @@ const forgotPassword = {
   })
 };
 
+const changePassword = {
+  body: Joi.object().keys({
+    oldPassword: Joi.string().required(),
+    newPassword: Joi.string().required()
+  })
+};
+
 
 module.exports = {
   login,
@@ -90,6 +97,6 @@ module.exports = {
   getUserById,
   update,
   resetPassword,
-  forgotPassword
-  
+  forgotPassword,
+  changePassword
 };
