@@ -64,6 +64,22 @@ const update = {
     document: Joi.string(),
   })
 };
+const resetPassword = {
+  query: Joi.object().keys({
+    token: Joi.string().required()
+  }),
+  body: Joi.object().keys({
+    password: Joi.string().required()
+  })
+};
+
+const forgotPassword = {
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    role: Joi.string().valid('Customer', 'Admin')
+  })
+};
+
 
 module.exports = {
   login,
@@ -72,5 +88,8 @@ module.exports = {
   register,
   generatePassword,
   getUserById,
-  update
+  update,
+  resetPassword,
+  forgotPassword
+  
 };

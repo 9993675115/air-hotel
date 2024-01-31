@@ -21,9 +21,15 @@ const createUser = async (_userBody) => {
 };
 
 const getUserByEmail = async (email) => {
-  return User.findOne({
-    where: { email, status: true }
-  });
+  try {
+    const data = await User.findOne({
+      where: { email: email, status: true, isActive: true }
+    });
+    return data;
+  } catch (error) {
+    console.error('Error retrieving user by email:', error);
+    throw error;
+  }
 };
 const getUserWithSecretFields = async (email) => {
   return User.scope('withSecretColumns').findOne({ where: { email } });
@@ -31,12 +37,12 @@ const getUserWithSecretFields = async (email) => {
 const getUserWithSecretFieldsById = async (id) => {
   return User.scope('withSecretColumns').findOne({ where: { id } });
 };
-const updateUserById = async (req) => {
-  const parsedSett =JSON.parse(req.body.settings)
-  const userId = req.user?.dataValues.id? req.user.dataValues.id:1;
-  return User.update( { settings: parsedSett },
-  { where: { id: userId } });
-};
+// const updateUserById = async (req) => {
+//   const parsedSett =JSON.parse(req.body.settings)
+//   const userId = req.user?.dataValues.id? req.user.dataValues.id:1;
+//   return User.update( { settings: parsedSett },
+//   { where: { id: userId } });
+// };
 const getAllUser = async () => {
   return User.findAll({
     where: {  status: true },
@@ -45,28 +51,41 @@ const getAllUser = async () => {
 };
 
 
-  const getUserById = async (userId) => {
+  const getUserById = async (id) => {
     try {
-      const user = await User.findByPk(userId);
-  
-      if (!user) {
-        console.log('User not found for id', userId);
-        return null; // or handle the case accordingly
-      }
-  
-      console.log('User found:', user);
-      return user;
+      const data = await User.findOne({
+        where: { id: id }
+      });
+      return data;
     } catch (error) {
-      console.error('Error fetching user by ID:', error);
-      throw new Error('Error fetching user by ID');
+      console.error('Error retrieving user by id:', error);
+      return error;
     }
   };
 
-  const updateUserByID = async (id, updatedData)=>{
-   const data = await User.update(updatedData, { where: { id } });
-  // return (id);
-  return data
+  // const updateUserByID = async (id, updatedData)=>{
+  //  const data = await User.update(updatedData, { where: { id } });
+  // // return (id);
+  // return data
+  // };
+
+  const updateUserByID = async (id, newData) => {
+    try {
+      console.log('check details-------------------------------', id, 'newData---------------------', newData);
+      const findData = await User.findOne({
+        where: { id: id }
+      });
+      if (findData) {
+        return User.update(newData, { where: { id: id } });
+      } else {
+        return;
+      }
+    } catch (err) {
+      console.log(err);
+      return;
+    }
   };
+
   const deleteUser = async (id) => {
     try {
       const deletedRowsCount = await User.update({status:false},{
@@ -84,7 +103,7 @@ module.exports = {
   getUserByEmail,
   getUserWithSecretFields,
   getUserWithSecretFieldsById,
-  updateUserById,
+  // updateUserById,
   getAllUser,
   getUserById,
   updateUserByID,

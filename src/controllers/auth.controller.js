@@ -114,7 +114,24 @@ const uploadImages = async (req, res) => {
   }
 };
 
+const resetPassword = catchAsync(async (req, res) => {
+  const data = await authService.resetPassword(req.query.token, req.body.password);
+  res.send(data);
+});
 
+const forgotPassword = catchAsync(async (req, res) => {
+  const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
+  let host;
+  // if (req.body.role === 'Admin') {
+  //   host = config.email.adminHost;
+  // } else if (req.body.role === 'Customer') {
+  //   host = config.email.CUSTOMER_HOST;
+  // }
+  host = config.email.CUSTOMER_HOST;
+  const data = await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken, host);
+  // res.status(httpStatus.NO_CONTENT).send();
+  res.send({ message: 'Email sent successfully!!' });
+});
 
 
 const deleteUser = async (req, res) => {
@@ -139,5 +156,7 @@ module.exports = {
   uploadImage,
   updateUserByID,
   deleteUser,
-  uploadImages
+  uploadImages,
+  resetPassword,
+  forgotPassword
 };

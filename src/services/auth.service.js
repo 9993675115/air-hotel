@@ -42,9 +42,46 @@ const refreshAuth = async (refreshToken) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
   }
 };
+const resetPassword = async (resetPasswordToken, newPassword) => {
+  try {
+    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
+    if (!resetPasswordTokenDoc) {
+      throw new Error('Invalid or expired reset password token');
+    }
+    const user = await userService.getUserById(resetPasswordTokenDoc.user);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const newHashedPassword = await bcrypt.hash(newPassword, 8);
+    const updatedUser = await userService.updateUserByID(user.id, { password: newHashedPassword });
+
+    if (updatedUser) {
+      return { message: 'Password reset successfully' };
+    } else {
+      throw new Error('Password reset failed');
+    }
+  } catch (error) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, error.message || 'Password reset failed');
+  }
+};
+
+const generateResetPasswordToken = async (email) => {
+  const user = await userService.getUserByEmail(email);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
+  }
+  const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
+  const resetPasswordToken = generateToken(user.id, user.role, expires, tokenTypes.RESET_PASSWORD);
+  await saveToken(resetPasswordToken, user.id, user.role, expires, tokenTypes.RESET_PASSWORD);
+  return resetPasswordToken;
+};
+
 
 module.exports = {
   loginUserWithEmailAndPassword,
   logout,
-  refreshAuth
+  refreshAuth,
+  resetPassword,
+  generateResetPasswordToken
 };
