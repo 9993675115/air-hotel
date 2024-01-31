@@ -23,7 +23,7 @@ const createUser = async (_userBody) => {
 const getUserByEmail = async (email) => {
   try {
     const data = await User.findOne({
-      where: { email: email, status: true, isActive: true }
+      where: { email: email, status: true}
     });
     return data;
   } catch (error) {

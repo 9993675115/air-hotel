@@ -62,7 +62,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
       throw new Error('Password reset failed');
     }
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, error.message || 'Password reset failed');
+    throw new ApiError(httpStatus.UNAUTHORIZED, error.message || 'Password reset failed in catch');
   }
 };
 

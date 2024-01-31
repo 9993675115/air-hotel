@@ -115,6 +115,7 @@ const uploadImages = async (req, res) => {
 };
 
 const resetPassword = catchAsync(async (req, res) => {
+ 
   const data = await authService.resetPassword(req.query.token, req.body.password);
   res.send(data);
 });

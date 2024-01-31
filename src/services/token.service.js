@@ -3,7 +3,6 @@ const moment = require('moment');
 // const httpStatus = require('http-status');
 const config = require('../config/config');
 const { Token } = require('../models');
-// const moment = require('moment');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 
@@ -32,8 +31,11 @@ const saveToken = async (token, userId, role, expires, type, blacklisted = false
 };
 
 const verifyToken = async (token, type) => {
+  // console.log("11111111111111",token,"2222222222222",type)
+  
   const payload = jwt.verify(token, config.jwt.secret);
-  const tokenDoc = await Token.findOne({ where: { token, type, user: payload.sub, blacklisted: false } });
+  const tokenDoc = await Token.findOne({ where: { token, user: payload.sub, blacklisted: false } });
+  console.log("11111111111111payloadpayloadpayload",tokenDoc)
 
   if (!tokenDoc) {
     throw new Error('Token not found');
