@@ -3,7 +3,8 @@ const Joi = require('joi');
 const createRoomSchema = {
   userId: Joi.number().required(),
   roomNumber: Joi.string().required(),
-  roomTypeId: Joi.number().required(),
+  roomType: Joi.string().required(),
+  roomType2: Joi.string().required(),
   extraMattress: Joi.boolean().required(),
   extraMattressCharge: Joi.number().required(),
   perNightCharge: Joi.number().required(),
@@ -16,6 +17,7 @@ const createRoomSchema = {
   image: Joi.object().required(), // You might need to refine this based on the actual structure of the image
   status: Joi.boolean(),
   hotelId:Joi.number(),
+  featureImage: Joi.object()
 };
 const getRoomByIdValidationSchema = {
   params: Joi.object({
@@ -40,8 +42,9 @@ const updateRoomValidationSchema = {
     image: Joi.object(), // You might need to refine this based on the actual structure of the image
     status: Joi.boolean(),
     hotelId:Joi.number(),
+    roomId: Joi.number(),
+    featureImage: Joi.object()
     // Add more validation as needed
-    roomId: Joi.number()
   }),
   // params: Joi.object({
   // }),

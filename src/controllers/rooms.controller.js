@@ -45,7 +45,7 @@ const getRoomById = async (req, res) => {
   try {
     const data = await roomsService.getRoomById(roomId);
     if (data) {
-      res.status(200).send(data); // Corrected: Send the data directly
+      res.status(200).send({message: 'Room updated successfully',data}); // Corrected: Send the data directly
     } else {
       res.status(404).send({ message: 'Not found' });
     }

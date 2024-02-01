@@ -89,6 +89,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'id',
       // as: 'categoryId' // Uncomment this line if you have an alias for the association
     });
+    User.hasOne(models.Subscription, {
+      foreignKey: 'id',
+     // as: 'categoryId'
+  });
   };
 
    return User;

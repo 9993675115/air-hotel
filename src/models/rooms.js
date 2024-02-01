@@ -24,9 +24,13 @@ module.exports = (sequelize) => {
       allowNull: false,
       type: DataTypes.INTEGER
     },
-    roomTypeId: {
+    roomType: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
+    },
+    roomType2: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
     extraMattress: {
       allowNull: false,
@@ -68,6 +72,9 @@ module.exports = (sequelize) => {
       allowNull: false,
       type: DataTypes.JSON
     },
+    featureImage: {
+        type: DataTypes.JSON // Assuming featureImage is stored as JSON
+      },
     status: {
       allowNull: false,
       type: DataTypes.BOOLEAN

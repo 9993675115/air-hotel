@@ -115,6 +115,7 @@ const uploadImage = async (req, res) => {
 };
 
 const uploadImages = async (req, res) => {
+  console.log("1111111111111111111",req)
   try {
     const images = req.files;
 
@@ -125,10 +126,7 @@ const uploadImages = async (req, res) => {
     const fileInformation = images.map((file) => {
       return file.filename.trim();
     });
-    // const fileInformation= image.map((item)=>{
-    // return item.filename
-    // })
-    // console.log("file===========",image);
+  
 
     res.send({ message: 'Images uploaded successfully', fileInformation: fileInformation });
   } catch (error) {

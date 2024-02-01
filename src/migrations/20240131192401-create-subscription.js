@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Subscriptions', {
@@ -29,6 +27,34 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+      },
+      startDate: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      endDate: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      paymentMethod: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      autoRenew: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
+      subscriptionType: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },      
       status: {
         type: Sequelize.BOOLEAN
       },

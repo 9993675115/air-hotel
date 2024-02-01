@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const { bookingService } = require('../services');
+// const { query } = require('express');
 
 // const createBooking = catchAsync(async (req, res) => {
 //  try{
@@ -51,10 +52,26 @@ const getBookingById = async (req, res) => {
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 };
-const getAllBooking = catchAsync(async (req, res) => {
-  const bookings = await bookingService.getAllBooking();
-  res.status(httpStatus.OK).json(bookings);
-});
+const getAllBooking = async (req, res) => {
+  try {
+    // Ensure req object and its properties are defined
+    if (!req || !req.query) {
+      throw new Error('Invalid request object');
+    }
+
+    // Extracting query parameters
+    const { page = 1, limit = 10, search } = req.query;
+
+    // Call the service function with the correct parameters
+    const data = await bookingService.getAllBooking(search, { page, limit });
+
+    // Return the data as needed
+    res.json({ data });
+  } catch (error) {
+    console.error('Error in getAllBooking controller:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 
 

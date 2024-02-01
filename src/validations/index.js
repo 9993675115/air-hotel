@@ -29,3 +29,4 @@ module.exports.bookingValidation = require('./booking.validation');
 module.exports.bookingDetailsValidation = require('./bookingDetails.validation');
 module.exports.hotelValidation = require('./hotel.validation');
 module.exports.categoryValidation = require('./category.validation');
+module.exports.subscriptionValidation = require('./subscription.validation');

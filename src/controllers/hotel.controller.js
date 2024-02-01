@@ -60,9 +60,8 @@ const getAllHotels = async (req, res) => {
 
     // Call the service function with the correct parameters
     const data = await hotelServices.hotelService.getAllHotels(search, { page, limit });
-
     // Return the data as needed
-    res.json({ data });
+    res.json({ data:data });
   } catch (error) {
     console.error('Error getting all hotels:', error);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });

@@ -20,9 +20,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      roomTypeId: {
+      roomType: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
+      },
+      roomType2: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       extraMattress: {
         allowNull: false,
@@ -63,6 +67,9 @@ module.exports = {
       image: {
         allowNull: false,
         type: Sequelize.JSON
+      },
+      featureImage: {
+        type:  Sequelize.JSON  // Assuming featureImage is a string path to the feature image file
       },
       status: {
         allowNull: false,

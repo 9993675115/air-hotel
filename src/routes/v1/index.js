@@ -12,6 +12,8 @@ const addressRoute = require('./address.route')
 const ratingRoute = require('./rating.route')
 const hotelRoute = require('./hotel.route')
 const categoryRoute = require('./category.route')
+const subscriptionRoute = require('./subscription.route')
+
 const router = express.Router();
 
 const defaultRoutes = [
@@ -64,9 +66,11 @@ const defaultRoutes = [
   },{
     path: '/category',
     route: categoryRoute
+  },{
+    path: '/subscription',
+    route: subscriptionRoute
   },
-
-
+  
 ];
 
 
