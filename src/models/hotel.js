@@ -8,9 +8,15 @@ const Hotel = sequelize.define('Hotel', {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  // ... (other existing columns)
-
-  // New columns
+  userId:{
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  //   references: {
+  //     model: 'User', // Assuming your Category model name is 'Category' and table name is 'Categories'
+  //     key: 'id'
+  //   } 
+  },
   address: {
     allowNull: false,
     type: DataTypes.STRING
@@ -76,7 +82,7 @@ const Hotel = sequelize.define('Hotel', {
   },
   image: {
     type: DataTypes.STRING,
-    defaultValue: true,
+    // defaultValue: null,
   },
   description: {
     allowNull: false,
@@ -108,9 +114,14 @@ const Hotel = sequelize.define('Hotel', {
     Hotel.belongsTo(models.Category, {
       foreignKey: 'categoryId', // Correct foreign key
     });
-    Hotel.hasOne(models.Room, {
-      foreignKey: 'hotelId', // Correct foreign key for Room association
+    Hotel.hasMany(models.Room, {
+      foreignKey: 'hotelId',
+      // Correct foreign key for Room association
     });
+    // Hotel.hasMany(models.User, {
+    //   foreignKey: 'id',
+    //   // Correct foreign key for Room association
+    // });
   };
   // Hotel.belongsTo(Category, { foreignKey: 'Category', as: 'Category' });
   return Hotel;

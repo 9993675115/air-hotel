@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
-const { Hotel, Category } = require('../models');
+const { Hotel, Category,Room } = require('../models');
 const { Sequelize, Op } = require('sequelize');
 
 const createHotel = async (hotelData) => {
@@ -21,7 +21,7 @@ const getHotelById = async (id) => {
   try {
     const hotel = await Hotel.findByPk(id, {
       where: {},
-      include: Category
+      include:[{model:Room},{model:Category}]
     });
     return hotel;
   } catch (error) {
@@ -76,7 +76,6 @@ const getAllHotels = async (query, options) => {
         order: [['updatedAt', 'DESC']],
         limit,
         offset,
-        include: Category
       });
       return data;
     }

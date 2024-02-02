@@ -66,7 +66,6 @@ const getAllUser = async (req, res) => {
       throw new Error('Invalid request object');
     }
 
-    // Extracting query parameters
     const { page = 1, limit = 10, search } = req.query;
 
     // Call the service function with the correct parameters
@@ -115,7 +114,6 @@ const uploadImage = async (req, res) => {
 };
 
 const uploadImages = async (req, res) => {
-  console.log("1111111111111111111",req)
   try {
     const images = req.files;
 

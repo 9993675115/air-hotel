@@ -50,43 +50,50 @@ const getUserWithSecretFieldsById = async (id) => {
 
 const getAllUser = async (query, options) => {
   try {
-    if(query){
+    if (query !== undefined && query !== null && query !== '') {
       const limit = Number(options.limit);
-    const offset = options.page ? limit * (options.page - 1) : 0;
+      
+      const offset = options.page ? limit * (options.page - 1) : 0;
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+      
 
-    // Ensure the query is a string
-    const searchString = query ? query.toString() : '';
-    
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          firstName: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          lastName: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          email: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          // Add more fields as needed
+        }
+      } : {};
 
-    // Define the where clause for search
-    const whereClause = searchString ? {
-      [Sequelize.Op.or]: {
-        firstName: { [Sequelize.Op.iLike]: `%${searchString}%` },
-        lastName: { [Sequelize.Op.iLike]: `%${searchString}%` },
-        email: { [Sequelize.Op.iLike]: `%${searchString}%` },
-        // Add more fields as needed
-      }
-    } : {};
+      // Log relevant variables for the search cas
 
-    // Log relevant variables
-
-    const data = await User.findAndCountAll({
-      where: whereClause,
-      order: [['updatedAt', 'DESC']],
-      limit,
-      offset,
-    });
-
-    return data;
-    }
-    else{
-    const data = User.findAll({
-        where: {  status: true },
-        //  include:  Booking
+      const data = await User.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+         
       });
+
+      console.log('Returned Data:', data);
+
+      return data;
+    } else {
+      // Log relevant variables for the else case
+      console.log('Query is empty or undefined.');
+
+      const data = await User.findAll({
+        where: { status: true },
+        // include: Booking
+      });
+
+      console.log('Returned All Users Data:', data);
+
       return data;
     }
-    
   } catch (error) {
     console.error('Error getting users:', error);
     throw error;

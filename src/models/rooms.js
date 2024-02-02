@@ -8,17 +8,13 @@ module.exports = (sequelize) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    userId: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
-    },
-    hotelId: {  // Add this foreign key
+    hotelId: {
       allowNull: false,
       type: DataTypes.INTEGER,
       references: {
-        model: 'Hotel', // Assuming your Category model name is 'Category' and table name is 'Categories'
+        model: 'Hotel',
         key: 'id'
-      } 
+      }
     },
     roomNumber: {
       allowNull: false,
@@ -73,8 +69,8 @@ module.exports = (sequelize) => {
       type: DataTypes.JSON
     },
     featureImage: {
-        type: DataTypes.JSON // Assuming featureImage is stored as JSON
-      },
+      type: DataTypes.JSON
+    },
     status: {
       allowNull: false,
       type: DataTypes.BOOLEAN
@@ -91,28 +87,23 @@ module.exports = (sequelize) => {
   {
     tableName: 'Rooms',
     freezeTableName: true
-  }
-  );
+  });
 
   Room.associate = function(models) {
     Room.belongsTo(models.Hotel, {
-        foreignKey: 'id',
-        // onDelete: 'CASCADE'
+      foreignKey: 'hotelId',
+      targetkey: 'id'
+      // onDelete: 'CASCADE'
+    });
+
+    Room.hasOne(models.Booking, {
+      foreignKey: 'id'
+    });
+
+    Room.hasMany(models.BookingDetails, {
+      foreignKey: 'id'
     });
   };
 
-  Room.associate = function(models) {
-    Room.hasOne(models.Booking,{
-        foreignKey: 'id',
-        // as: 'roomId'
-    })
-  };
-  
-  Room.associate = function(models) {
-    Room.hasMany(models.BookingDetails,{
-        foreignKey: 'id',
-        // as: 'roomId'
-    })
-  };
   return Room;
 };

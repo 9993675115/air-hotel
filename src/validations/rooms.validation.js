@@ -1,8 +1,8 @@
 const Joi = require('joi');
 
 const createRoomSchema = {
-  userId: Joi.number().required(),
-  roomNumber: Joi.string().required(),
+ 
+  roomNumber: Joi.number().required(),
   roomType: Joi.string().required(),
   roomType2: Joi.string().required(),
   extraMattress: Joi.boolean().required(),
@@ -19,15 +19,28 @@ const createRoomSchema = {
   hotelId:Joi.number(),
   featureImage: Joi.object()
 };
-const getRoomByIdValidationSchema = {
-  params: Joi.object({
-    bookingId: Joi.number().required(),
-  }),
+const getRoomValidation = {
+  roomNumber: Joi.number().required(),
+  roomType: Joi.string().required(),
+  roomType2: Joi.string().required(),
+  extraMattress: Joi.boolean().required(),
+  extraMattressCharge: Joi.number().required(),
+  perNightCharge: Joi.number().required(),
+  monthlyCharge: Joi.number().required(),
+  weeklyCharge: Joi.number().required(),
+  numberOfGuest: Joi.number().required(),
+  numberOfChildren: Joi.number().required(),
+  description: Joi.string().required(),
+  selectAmenities: Joi.array().items(Joi.string()).required(),
+  image: Joi.object().required(), // You might need to refine this based on the actual structure of the image
+  status: Joi.boolean(),
+  hotelId:Joi.number(),
+  featureImage: Joi.object()
 };
 
 const updateRoomValidationSchema = {
   body: Joi.object({
-    userId: Joi.number(),
+   
     roomNumber: Joi.number(),
     roomTypeId: Joi.number(),
     extraMattress: Joi.boolean(),
@@ -53,5 +66,5 @@ const updateRoomValidationSchema = {
 module.exports = {
   createRoomSchema,
   updateRoomValidationSchema,
-  getRoomByIdValidationSchema
+  getRoomValidation
 };

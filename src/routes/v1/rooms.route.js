@@ -1,5 +1,6 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
+const auth = require('../../middlewares/auth');
 const roomValidation = require('../../validations/rooms.validation');
 const roomController = require('../../controllers/rooms.controller');
 

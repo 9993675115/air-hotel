@@ -1,6 +1,7 @@
 // routes/categoryRoutes.js
 const express = require('express');
 const validate = require('../../middlewares/validate');
+const auth = require('../../middlewares/auth');
 const categoryController = require('../../controllers/category.controller');
 const categoryValidation = require('../../validations/category.validation');
 

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       lastName: {
-        type: DataTypes.STRING // Make sure the column name matches the migration file
+        type: DataTypes.STRING
       },
       email: {
         type: DataTypes.STRING,
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       role: {
         type: DataTypes.STRING,
-        defaultValue: 'user'
+        defaultValue: 'User'
       },
       Dob: {
         type: DataTypes.DATE
@@ -31,11 +31,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       image: {
-        type: DataTypes.JSON // Assuming image is stored as JSON
+        type: DataTypes.JSON
       },
-      // featureImage: {
-      //   type: DataTypes.JSON // Assuming featureImage is stored as JSON
-      // },
       companyName: {
         type: DataTypes.STRING
       },
@@ -55,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
-      contact:{
+      contact: {
         type: DataTypes.BIGINT
       },
       isVerify: {
@@ -77,22 +74,25 @@ module.exports = (sequelize, DataTypes) => {
  
   User.associate = function (models) {
     User.hasMany(models.Booking, {
-      foreignKey: 'userId',
+      foreignKey: 'id', // Correct the foreign key reference
     });
+    // User.belongsTo(models.Hotel, {
+    //   foreignKey: 'id', // Correct the foreign key reference to hotelId
+    //   // targetkey: 'id'
+    //   // onDelete: 'CASCADE'
+    // });
 
     User.hasOne(models.Rating, {
-      foreignKey: 'id',
-      // as: 'categoryId' // Uncomment this line if you have an alias for the association
+      foreignKey: 'id', // Correct the foreign key reference
     });
 
     User.hasOne(models.Payment, {
-      foreignKey: 'id',
-      // as: 'categoryId' // Uncomment this line if you have an alias for the association
+      foreignKey: 'id', // Correct the foreign key reference
     });
+
     User.hasOne(models.Subscription, {
-      foreignKey: 'id',
-     // as: 'categoryId'
-  });
+      foreignKey: 'id', // Correct the foreign key reference
+    });
   };
 
    return User;

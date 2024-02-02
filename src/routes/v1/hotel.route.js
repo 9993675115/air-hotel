@@ -1,5 +1,6 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
+const auth = require('../../middlewares/auth');
 const hotelValidation = require('../../validations/hotel.validation');
 const hotelController = require('../../controllers/hotel.controller');
 
@@ -10,12 +11,12 @@ router.post('/hotels', validate(hotelValidation.createHotelSchema), hotelControl
 // Add more routes as needed
 
 // GET /api/bookings/:bookingId
-router.get('/:id', validate(hotelValidation.getHotelSchema),hotelController.getHotelById);
+router.get('/:id',hotelController.getHotelById);
 
 router.get('/', hotelController.getAllHotels);
 
 // PUT /api/bookings/:bookingId
-router.put('/:id', validate(hotelValidation.updateHotelSchema), hotelController.updateHotel);
+router.put('/:id',auth(), validate(hotelValidation.updateHotelSchema), hotelController.updateHotel);
 
 // DELETE /api/bookings/:bookingId
 router.delete('/:id', hotelController.deleteHotel);

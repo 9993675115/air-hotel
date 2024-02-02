@@ -3,16 +3,7 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const hotelServices = require('../services');
 
-// const createHotel = async (req, res) => {
-//   try{
-//   const createdHotel= await hotelServices.hotelService.createHotel(req.body);
-//   res.status(httpStatus.CREATED).send({ message:"hotel added successfully" });
-//   }
-//   catch (error) {
-//     console.error('Error createdHotel by id:', error);
-//     return res.status(500).json({ error: error });
-//   }
-// };
+
 const createHotel = async (req, res) => {
   try {
     const createdHotel = await hotelServices.hotelService.createHotel(req.body);
@@ -29,8 +20,6 @@ const createHotel = async (req, res) => {
     }
   }
 };
-
-
 
 const getHotelById = async (req, res) => {
   try {

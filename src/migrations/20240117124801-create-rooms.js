@@ -8,13 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
       hotelId: {  // Add this foreign key
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       roomNumber: {
         allowNull: false,

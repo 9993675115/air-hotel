@@ -25,7 +25,8 @@ const getAllRoom = async () => {
   try {
     const room = await Room.findAll({
       where: {
-        status: true
+        status: true,
+      
       }
     });
     return room;
