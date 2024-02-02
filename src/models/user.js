@@ -76,11 +76,11 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Booking, {
       foreignKey: 'id', // Correct the foreign key reference
     });
-    // User.belongsTo(models.Hotel, {
-    //   foreignKey: 'id', // Correct the foreign key reference to hotelId
-    //   // targetkey: 'id'
-    //   // onDelete: 'CASCADE'
-    // });
+    User.hasMany(models.Hotel, {
+      foreignKey: 'userId', // Correct the foreign key reference to hotelId
+      // targetkey: 'id'
+      // onDelete: 'CASCADE'
+    });
 
     User.hasOne(models.Rating, {
       foreignKey: 'id', // Correct the foreign key reference

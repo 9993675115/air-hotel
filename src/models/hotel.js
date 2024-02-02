@@ -9,13 +9,11 @@ const Hotel = sequelize.define('Hotel', {
     type: DataTypes.INTEGER
   },
   userId:{
-    allowNull: false,
     type: DataTypes.INTEGER,
-    defaultValue: 0
-  //   references: {
-  //     model: 'User', // Assuming your Category model name is 'Category' and table name is 'Categories'
-  //     key: 'id'
-  //   } 
+    references: {
+      model: 'User', // Assuming your Category model name is 'Category' and table name is 'Categories'
+      key: 'id'
+    } 
   },
   address: {
     allowNull: false,
@@ -118,10 +116,10 @@ const Hotel = sequelize.define('Hotel', {
       foreignKey: 'hotelId',
       // Correct foreign key for Room association
     });
-    // Hotel.hasMany(models.User, {
-    //   foreignKey: 'id',
-    //   // Correct foreign key for Room association
-    // });
+    Hotel.belongsTo(models.User, {
+      foreignKey: 'userId',
+      // Correct foreign key for Room association
+    });
   };
   // Hotel.belongsTo(Category, { foreignKey: 'Category', as: 'Category' });
   return Hotel;

@@ -5,8 +5,11 @@ const hotelServices = require('../services');
 
 
 const createHotel = async (req, res) => {
+  console.log('bbbbbbbbbbbbbbb',req.user.id)
   try {
-    const createdHotel = await hotelServices.hotelService.createHotel(req.body);
+    const body = req.body;
+    body.userId = req.user.id;
+    const createdHotel = await hotelServices.hotelService.createHotel(body);
     res.status(httpStatus.CREATED).send({ message: "Hotel added successfully", data: createdHotel });
   } catch (error) {
     console.error('Error creating hotel:', error);
