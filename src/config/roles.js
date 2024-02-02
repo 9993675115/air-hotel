@@ -1,7 +1,7 @@
 const allRoles = {
-  Admin: ['manageUser','mangeCategory',],
+  Admin: ['manageUser','mangeCategory','addHotelByAdmin'],
   User: ['manageBrand'],
-  Vendor:['mangeVendorHotel']
+  Vendor:['mangeVendorHotel','addHotelByVendor']
 };
 
 const roles = Object.keys(allRoles);

@@ -7,7 +7,7 @@ const hotelController = require('../../controllers/hotel.controller');
 const router = express.Router();
 
 
-router.post('/hotels',auth(), validate(hotelValidation.createHotelSchema), hotelController.createHotel);
+router.post('/hotels',auth('addHotelByVendor','addHotelByAdmin'), validate(hotelValidation.createHotelSchema), hotelController.createHotel);
 // Add more routes as needed
 
 // GET /api/bookings/:bookingId
