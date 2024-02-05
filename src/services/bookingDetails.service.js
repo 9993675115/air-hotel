@@ -5,6 +5,7 @@ const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 const { BookingDetails } = require('../models');
+const { Sequelize, Op, DataTypes } = require('sequelize');
 
 const createBookingDetails = async (_userBody) => {
   const userBody = _userBody;
@@ -26,12 +27,69 @@ const getBookingDetailById = async (id) => {
     throw error;
   }
 };
-const getAllBookingDetails = async () => {
+const getAllBookingDetails = async (query, options) => {
   try {
-    const bookingDetails = await BookingDetails.findAll();
-    return bookingDetails;
+    if (isNaN(query)) {
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
+
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          paymentType: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          // address: { [Sequelize.Op.iLike]: `%${searchString}%` },
+         
+          // Add more fields as needed
+        }
+      } : {};
+
+      const data = await BookingDetails.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return data;
+    } else {
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
+
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          bookingId:  { [Op.eq]: searchString },
+          // totalRoom: { [Op.eq]: searchString },
+          // roomQuantity: { [Op.eq]: searchString },
+          amount: { [Op.eq]: searchString },
+          roomId: { [Op.eq]: searchString },
+          // Add more fields as needed
+          // checkOutDate: {
+          //   [Sequelize.Op.between]: [
+          //     new Date(new Date(searchString).setUTCHours(0, 0, 0, 0)), // Start of the day
+          //     new Date(new Date(searchString).setUTCHours(23, 59, 59, 999)) // End of the day
+          //   ]
+          // },
+        }
+      } : {};
+
+      const data = await BookingDetails.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return data;
+    }
   } catch (error) {
-    console.error('Error getting all booking details:', error);
+    console.error('Error getting all bookings:', error);
     throw error;
   }
 };

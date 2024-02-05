@@ -10,6 +10,8 @@ const pick = (object, keys) => {
       // eslint-disable-next-line no-param-reassign
       obj[key] = object[key];
     }
+    obj.limit = obj.limit ? obj.limit : 100000000;
+    obj.page = obj.page ? obj.page : 1;
     return obj;
   }, {});
 };

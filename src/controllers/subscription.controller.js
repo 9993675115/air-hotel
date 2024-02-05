@@ -40,9 +40,26 @@ const getSubscriptionById = async (req, res) => {
 };
 
 const getAllSubscriptions = catchAsync(async (req, res) => {
-  const subscriptions = await subscriptionService.getAllSubscriptions();
-  res.status(httpStatus.OK).json(subscriptions);
+  try {
+    // Ensure req object and its properties are defined
+    if (!req || !req.query) {
+      throw new Error('Invalid request object');
+    }
+
+    // Extracting query parameters
+    const { page = 1, limit = 10, search } = req.query;
+
+    // Call the service function with the correct parameters
+    const data = await subscriptionService.getAllSubscriptions(search, { page, limit });
+
+    // Return the data as needed
+    res.json({ data });
+  } catch (error) {
+    console.error('Error getting Subscriptions :', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Error getting Subscriptions' });
+  }
 });
+
 
 const updateSubscription = async (req, res) => {
   try {

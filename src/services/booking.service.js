@@ -22,8 +22,11 @@ const getBookingById = async (bookingId) => {
   }
 };
 const getAllBooking = async (query, options) => {
+  const isValidDate = (date) => {
+    return date instanceof Date && !isNaN(date);
+  };
   try {
-    if (query) {
+    if (isNaN(query)) {
       const limit = Number(options.limit);
       const offset = options.page ? limit * (options.page - 1) : 0;
 
@@ -35,17 +38,21 @@ const getAllBooking = async (query, options) => {
         [Sequelize.Op.or]: {
           name: { [Sequelize.Op.iLike]: `%${searchString}%` },
           address: { [Sequelize.Op.iLike]: `%${searchString}%` },
-          // totalRoom: { [Sequelize.Op.eq]: searchString },
-          price:  { [Sequelize.Op.eq]: isNaN(searchString) ? searchString : Number(searchString) },
-          // checkInDate: { [Sequelize.Op.iLike]: `%${searchString}%` },
-          // checkOutDate: { [Sequelize.Op.iLike]: `%${searchString}%` },
-          userId: { [Sequelize.Op.eq]: isNaN(searchString) ? searchString : Number(searchString) },
-          roomId:  { [Sequelize.Op.eq]: isNaN(searchString) ? searchString : Number(searchString) },
+          checkInDate: {
+            [Sequelize.Op.between]: [
+              isValidDate(new Date(searchString)) ? new Date(searchString) : new Date(),
+              isValidDate(new Date(searchString)) ? new Date(searchString) : new Date()
+            ]
+          },
+          checkOutDate: {
+            [Sequelize.Op.between]: [
+              isValidDate(new Date(searchString)) ? new Date(searchString) : new Date(),
+              isValidDate(new Date(searchString)) ? new Date(searchString) : new Date()
+            ]
+          },
           // Add more fields as needed
         }
       } : {};
-
-      // Log relevant variables
 
       const data = await Booking.findAndCountAll({
         where: whereClause,
@@ -56,12 +63,37 @@ const getAllBooking = async (query, options) => {
 
       return data;
     } else {
-      const data = await Booking.findAll({
-        where: {
-          status: true,
-          // isActive: true,
-        },
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
+
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          price:  { [Op.eq]: searchString },
+          totalRoom: { [Op.eq]: searchString },
+          roomQuantity: { [Op.eq]: searchString },
+          userId: { [Op.eq]: searchString },
+          roomId: { [Op.eq]: searchString },
+          // Add more fields as needed
+          // checkOutDate: {
+          //   [Sequelize.Op.between]: [
+          //     new Date(new Date(searchString).setUTCHours(0, 0, 0, 0)), // Start of the day
+          //     new Date(new Date(searchString).setUTCHours(23, 59, 59, 999)) // End of the day
+          //   ]
+          // },
+        }
+      } : {};
+
+      const data = await Booking.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
       });
+
       return data;
     }
   } catch (error) {

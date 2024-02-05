@@ -35,8 +35,7 @@ const verifyToken = async (token, type) => {
   
   const payload = jwt.verify(token, config.jwt.secret);
   const tokenDoc = await Token.findOne({ where: { token, user: payload.sub, blacklisted: false } });
-  console.log("11111111111111payloadpayloadpayload",tokenDoc)
-
+  
   if (!tokenDoc) {
     throw new Error('Token not found');
   }
@@ -62,9 +61,24 @@ const generateAuthTokens = async (user) => {
   };
 };
 
+
+const generateResetPasswordToken = async (email) => {
+  const user = await userService.getUserByEmail(email);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
+  }
+  const expires = moment().add(10, 'minutes').toISOString();
+
+  const resetPasswordToken = generateToken(user.id, user.role, expires, tokenTypes.RESET_PASSWORD);
+  await saveTokenForForget(resetPasswordToken, user.id, expires, 'resetPassword');
+  return resetPasswordToken;
+};
+
+
 module.exports = {
   generateToken,
   saveToken,
   verifyToken,
-  generateAuthTokens
+  generateAuthTokens,
+  generateResetPasswordToken
 };

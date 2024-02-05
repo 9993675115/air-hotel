@@ -26,10 +26,25 @@ const getSupportById = catchAsync(async (req, res) => {
 });
 
 const getAllSupport = catchAsync(async (req, res) => {
-  const supports = await supportService.getAllSupport();
-  res.status(httpStatus.OK).json({ supports });
-});
+  try {
+    // Ensure req object and its properties are defined
+    if (!req || !req.query) {
+      throw new Error('Invalid request object');
+    }
 
+    // Extracting query parameters
+    const { page = 1, limit = 10, search } = req.query;
+
+    // Call the service function with the correct parameters
+    const data = await supportService.getAllSupport(search, { page, limit });
+
+    // Return the data as needed
+    res.json({ data });
+  } catch (error) {
+    console.error('Error getting supportss :', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Error getting supports' });
+  }
+});
 
 const updateSupport = catchAsync(async (req, res) => {
   const { supportId } = req.params;

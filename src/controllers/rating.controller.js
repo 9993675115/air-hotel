@@ -72,12 +72,20 @@ const updateRating = async (req, res) => {
 };
 
 const getAllRating = async (req, res) => {
-  const userId = req.params.ratingId;
-
   try {
-    const ratings = await ratingService.getAllRating(userId);
+    // Ensure req object and its properties are defined
+    if (!req || !req.query) {
+      throw new Error('Invalid request object');
+    }
 
-    res.status(httpStatus.OK).send({ ratings });
+    // Extracting query parameters
+    const { page = 1, limit = 10, search } = req.query;
+
+    // Call the service function with the correct parameters
+    const data = await ratingService.getAllRating(search, { page, limit });
+
+    // Return the data as needed
+    res.json({ data });
   } catch (error) {
     console.error('Error getting ratings by user ID:', error);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Error getting ratings' });

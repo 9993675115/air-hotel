@@ -5,6 +5,7 @@ const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 const { RoomType } = require('../models');
+const { Sequelize, Op, DataTypes } = require('sequelize');
 
 const createRoomType = async (_userBody) => {
   const userBody = _userBody;
@@ -27,16 +28,46 @@ const getRoomTypeById = async (roomTypeId) => {
     throw error;
   }
 };
-const getRoomTypeAll = async () => {
+const getRoomTypeAll = async (query, options) => {
   try {
-    // Fetch all room types from the database
-    const roomTypes = await RoomType.findAll({ where: { status: true } });
+    if (isNaN(query)) {
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
 
-    // Return the result
-    return roomTypes;
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          typeName: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          // description: { [Sequelize.Op.iLike]: `%${searchString}%` },
+         
+          // Add more fields as needed
+        }
+      } : {};
+
+      const data = await RoomType.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return data;
+    } else {
+      console.log('Query is empty or undefined.');
+
+      const data = await RoomType.findAll({
+        where: { status: true },
+        // include: Booking
+      });
+
+      console.log('Returned All RoomType Data:', data);
+      return data;
+    }
   } catch (error) {
-    // Handle errors (you can log or throw an error)
-    console.error('Error getting all room types:', error);
+    console.error('Error getting all RoomType:', error);
     throw error;
   }
 };

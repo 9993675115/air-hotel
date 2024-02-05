@@ -5,6 +5,7 @@ const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 // const support = require('../models/support');
+const { Sequelize, Op, DataTypes } = require('sequelize');
 
 const createSupport = async (_supportBody) => {
   const supportBody = _supportBody;
@@ -21,12 +22,44 @@ const getSupportById = async (supportId) => {
 };
 
 
-const getAllSupport = async () => {
+const getAllSupport = async (query, options) => {
   try {
-    const supports = await Support.findAll({where:{status:true}});
-    return supports;
+    if (isNaN(query)) {
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
+
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          sentBy: { [Sequelize.Op.iLike]: `%${searchString}%` },
+        }
+      } : {};
+
+      const data = await Support.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return data;
+    } else {
+      console.log('Query is empty or undefined.');
+
+      const data = await Support.findAll({
+        where: { status: true },
+        // include: Booking
+      });
+
+      console.log('Returned All Supports Data:', data);
+
+      return data;
+    }
   } catch (error) {
-    console.error('Error getting all supports:', error);
+    console.error('Error getting all Supports:', error);
     throw error;
   }
 };

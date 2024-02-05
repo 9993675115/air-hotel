@@ -5,6 +5,8 @@ const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 const { Rating } = require('../models');
+const { Sequelize, Op, DataTypes } = require('sequelize');
+
 
 const createRating = async (_userBody) => {
   const userBody = _userBody;
@@ -45,18 +47,73 @@ const updateRating = async (ratingId, updateData) => {
   }
 };
 
-const getAllRating = async (userId) => {
+const getAllRating = async (query, options) => {
   try {
-    const ratings = await Rating.findAll({status:true},{
-      where: { userId },
-    });
+    if (isNaN(query)) {
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
 
-    return ratings;
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          review: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          // address: { [Sequelize.Op.iLike]: `%${searchString}%` },
+         
+          // Add more fields as needed
+        }
+      } : {};
+
+      const data = await Rating.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return data;
+    } else {
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
+
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          userId:  { [Op.eq]: searchString },
+          // totalRoom: { [Op.eq]: searchString },
+          // roomQuantity: { [Op.eq]: searchString },
+          bookingId: { [Op.eq]: searchString },
+          // roomId: { [Op.eq]: searchString },
+          // Add more fields as needed
+          // checkOutDate: {
+          //   [Sequelize.Op.between]: [
+          //     new Date(new Date(searchString).setUTCHours(0, 0, 0, 0)), // Start of the day
+          //     new Date(new Date(searchString).setUTCHours(23, 59, 59, 999)) // End of the day
+          //   ]
+          // },
+        }
+      } : {};
+
+      const data = await Rating.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return data;
+    }
   } catch (error) {
-    console.error('Error getting ratings by user ID:', error);
+    console.error('Error getting all bookings:', error);
     throw error;
   }
 };
+
 
 
 const deleteRating = async (ratingId) => {

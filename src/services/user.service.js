@@ -48,15 +48,14 @@ const getUserWithSecretFieldsById = async (id) => {
   }
 };
 
-const getAllUser = async (query, options) => {
+const getAllUser = async (query, options, search) => {
   try {
-    if (query !== undefined && query !== null && query !== '') {
+    if (search !== undefined && search !== null && search !== '') {
       const limit = Number(options.limit);
-      
       const offset = options.page ? limit * (options.page - 1) : 0;
-      // Ensure the query is a string
-      const searchString = query ? query.toString() : '';
-      
+
+      // Ensure the search is a string
+      const searchString = search ? search.toString() : '';
 
       // Define the where clause for search
       const whereClause = searchString ? {
@@ -68,14 +67,16 @@ const getAllUser = async (query, options) => {
         }
       } : {};
 
-      // Log relevant variables for the search cas
+      // Log relevant variables for the search case
+      console.log('Search:', search);
+      console.log('Where Clause:', whereClause);
+      
 
       const data = await User.findAndCountAll({
         where: whereClause,
         order: [['updatedAt', 'DESC']],
         limit,
         offset,
-         
       });
 
       console.log('Returned Data:', data);
@@ -83,9 +84,9 @@ const getAllUser = async (query, options) => {
       return data;
     } else {
       // Log relevant variables for the else case
-      console.log('Query is empty or undefined.');
+      console.log('Search is empty or undefined.');
 
-      const data = await User.findAll({
+      const data = await User.findAndCountAll({
         where: { status: true },
         // include: Booking
       });

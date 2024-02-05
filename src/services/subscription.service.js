@@ -3,6 +3,7 @@ const ApiError = require('../utils/ApiError');
 const messages = require('../constant/message.json');
 const logger = require('../config/logger');
 const { Subscription } = require('../models');
+const { Sequelize, Op, DataTypes } = require('sequelize');
 
 const createSubscription = async (_subscriptionBody) => {
   const subscriptionBody = _subscriptionBody;
@@ -20,15 +21,84 @@ const getSubscriptionById = async (subscriptionId) => {
   }
 };
 
-const getAllSubscriptions = async () => {
+const getAllSubscriptions = async (query, options) => {
+  const isValidDate = (date) => {
+    return date instanceof Date && !isNaN(date);
+  };
   try {
-    const subscriptions = await Subscription.findAll();
-    return subscriptions;
+    if (isNaN(query)) {
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
+
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          planName: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          period: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          paymentMethod: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          subscriptionType: { [Sequelize.Op.iLike]: `%${searchString}%` },
+          startDate: {
+            [Sequelize.Op.between]: [
+              isValidDate(new Date(searchString)) ? new Date(searchString) : new Date(),
+              isValidDate(new Date(searchString)) ? new Date(searchString) : new Date()
+            ]
+          },
+          endDate: {
+            [Sequelize.Op.between]: [
+              isValidDate(new Date(searchString)) ? new Date(searchString) : new Date(),
+              isValidDate(new Date(searchString)) ? new Date(searchString) : new Date()
+            ]
+          },
+          // Add more fields as needed
+        }
+      } : {};
+
+      const data = await Subscription.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return data;
+    } else {
+      const limit = Number(options.limit);
+      const offset = options.page ? limit * (options.page - 1) : 0;
+
+      // Ensure the query is a string
+      const searchString = query ? query.toString() : '';
+
+      // Define the where clause for search
+      const whereClause = searchString ? {
+        [Sequelize.Op.or]: {
+          price:  { [Op.eq]: searchString },
+          noOfHotels: { [Op.eq]: searchString },
+          roomQuantity: { [Op.eq]: searchString },
+          userId: { [Op.eq]: searchString },
+          
+        }
+      } : {};
+
+      const data = await Subscription.findAndCountAll({
+        where: whereClause,
+        order: [['updatedAt', 'DESC']],
+        limit,
+        offset,
+      });
+
+      return data;
+    }
   } catch (error) {
-    console.error('Error getting all subscriptions:', error);
+    console.error('Error getting all Subscriptions:', error);
     throw error;
   }
 };
+
+
+
 
 const updateSubscription = async (subscriptionId, updatedData) => {
   // Correct the column name to "id"

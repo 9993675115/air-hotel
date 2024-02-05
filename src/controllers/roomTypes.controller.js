@@ -62,12 +62,20 @@ const getRoomTypeById = async (req, res) => {
 };
 const getRoomTypeAll = async (req, res) => {
   try {
-    // Call the service function to get all room types
-    const roomTypes = await roomTypeService.getRoomTypeAll();
+    // Ensure req object and its properties are defined
+    if (!req || !req.query) {
+      throw new Error('Invalid request object');
+    }
 
-    // Respond with the room types
-    res.status(httpStatus.OK).json(roomTypes);
-  } catch (error) {
+    // Extracting query parameters
+    const { page = 1, limit = 10, search } = req.query;
+
+    // Call the service function with the correct parameters
+    const data = await roomTypeService.getRoomTypeAll(search, { page, limit });
+
+    // Return the data as needed
+    res.json({ data });
+  }catch (error) {
     // Handle errors and respond with an internal server error
     console.error('Error getting all room types:', error);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
@@ -76,8 +84,17 @@ const getRoomTypeAll = async (req, res) => {
 
 
 const updateRoomType = async (req, res) => {
-  // Implementation to update room type by ID
-  res.status(200).send('Update Room Type');
+  try {
+    const { roomTypeId } = req.params;
+    const roomTypeData = req.body;
+
+    const updatedRoomType = await roomTypeService.updateRoomType(roomTypeId, roomTypeData);
+
+    res.status(200).json({ success: true, data: updatedRoomType });
+  } catch (error) {
+    console.error('Error updating room type:', error);
+    res.status(500).json({ success: false, error: 'Error updating room type' });
+  }
 };
 
 const deleteRoomType = async (req, res) => {

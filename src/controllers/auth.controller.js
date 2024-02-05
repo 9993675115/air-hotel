@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const pick = require('../utils/pick');
 const catchAsync = require('../utils/catchAsync');
-const { authService, tokenService, userService } = require('../services');
+const { authService, tokenService, userService, emailService } = require('../services');
 const fs = require('fs');
 
 // const ApiError = require('../utils/ApiError');
@@ -66,10 +66,20 @@ const getAllUser = async (req, res) => {
       throw new Error('Invalid request object');
     }
 
-    const { page = 1, limit = 10, search } = req.query;
+    let query = {};
+    query.status = req.query.status ? req.query.status : true;
+
+    // Extracting sortBy, limit, and page from the request query
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+    // Assuming search is correctly defined and extracted as a string
+    const search = req.query.search || ''; 
+
+    // Log or inspect the value of search to ensure it's a string
+    console.log('Search:', search);
 
     // Call the service function with the correct parameters
-    const data = await userService.getAllUser(search, { page, limit });
+    const data = await userService.getAllUser(query, options, search);
 
     // Return the data as needed
     res.json({ data });
@@ -78,7 +88,6 @@ const getAllUser = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
 
 
 const getUserByID = async (req, res) => {
@@ -141,18 +150,10 @@ const resetPassword = catchAsync(async (req, res) => {
 
 const forgotPassword = catchAsync(async (req, res) => {
   const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
-  let host;
-  // if (req.body.role === 'Admin') {
-  //   host = config.email.adminHost;
-  // } else if (req.body.role === 'Customer') {
-  //   host = config.email.CUSTOMER_HOST;
-  // }
-  host = config.email.CUSTOMER_HOST;
-  const data = await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken, host);
-  // res.status(httpStatus.NO_CONTENT).send();
-  res.send({ message: 'Email sent successfully!!' });
+  const host = config.email.userHost;
+  await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken, host);
+  res.status(200).send({ message: 'please check email' });
 });
-
 const changePassword = catchAsync(async (req, res) => {
   const userWithSecretFields = await userService.getUserWithSecretFieldsById(req.user.dataValues.id);
   const password = req.body.oldPassword;

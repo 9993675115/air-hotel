@@ -55,8 +55,24 @@ const getRoomById = async (req, res) => {
   }
 };
 const getAllRoom = catchAsync(async (req, res) => {
-  const Room = await roomsService.getAllRoom();
-  res.status(httpStatus.OK).json(Room);
+  try {
+    // Ensure req object and its properties are defined
+    if (!req || !req.query) {
+      throw new Error('Invalid request object');
+    }
+
+    // Extracting query parameters
+    const { page = 1, limit = 10, search } = req.query;
+
+    // Call the service function with the correct parameters
+    const data = await roomsService.getAllRoom(search, { page, limit });
+
+    // Return the data as needed
+    res.json({ data });
+  } catch (error) {
+    console.error('Error getting rooms :', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Error getting rooms' });
+  }
 });
 
 

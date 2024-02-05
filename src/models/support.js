@@ -25,7 +25,7 @@ module.exports = (sequelize,DataTypes) => {
   });
 
   Support.associate = function(models) {
-    Support.hasOne(models.SupportDetail, {
+    Support.hasMany(models.SupportDetail, {
         foreignKey: 'id',
        // as: 'categoryId'
     });

@@ -54,7 +54,7 @@ const createCategory = async (_userBody) => {
     
         return data;
       }else{
-        const data = await Category.findAll({
+        const data = await Category.findAndCountAll({
           where: {
             status: true,
             // isActive: true,
