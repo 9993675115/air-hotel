@@ -5,12 +5,18 @@ const hotelServices = require('../services');
 
 
 const createHotel = async (req, res) => {
-  console.log('bbbbbbbbbbbbbbb',req.user.id)
   try {
+    // Ensure the user has the 'vendor' role
+    if (req.user.role !== 'Vendor') {
+      return res.status(403).json({ error: 'Only vendors can create hotels.' });
+    }
+
     const body = req.body;
-    body.userId = req.user.id;
+    body.vendorId = req.user.id;
+
     const createdHotel = await hotelServices.hotelService.createHotel(body);
-    res.status(httpStatus.CREATED).send({ message: "Hotel added successfully", data: createdHotel });
+
+    res.status(httpStatus.CREATED).send({ message: 'Hotel added successfully', data: createdHotel });
   } catch (error) {
     console.error('Error creating hotel:', error);
 
@@ -23,6 +29,7 @@ const createHotel = async (req, res) => {
     }
   }
 };
+
 
 const getHotelById = async (req, res) => {
   try {

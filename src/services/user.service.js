@@ -51,8 +51,14 @@ const getUserWithSecretFieldsById = async (id) => {
 const getAllUser = async (query, options, search) => {
   try {
     if (search !== undefined && search !== null && search !== '') {
-      const limit = Number(options.limit);
-      const offset = options.page ? limit * (options.page - 1) : 0;
+      // Ensure options is defined
+      if (!options) {
+        options = {};
+      }
+
+      const limit = options.limit ? Number(options.limit) : 10;
+      const page = options.page ? Number(options.page) : 1;
+      const offset = limit * (page - 1);
 
       // Ensure the search is a string
       const searchString = search ? search.toString() : '';
@@ -70,7 +76,6 @@ const getAllUser = async (query, options, search) => {
       // Log relevant variables for the search case
       console.log('Search:', search);
       console.log('Where Clause:', whereClause);
-      
 
       const data = await User.findAndCountAll({
         where: whereClause,
@@ -88,7 +93,8 @@ const getAllUser = async (query, options, search) => {
 
       const data = await User.findAndCountAll({
         where: { status: true },
-        // include: Booking
+        limit: 10, // Add a default limit for all users
+        offset: 0, // Start from the beginning for all users
       });
 
       console.log('Returned All Users Data:', data);
@@ -100,7 +106,6 @@ const getAllUser = async (query, options, search) => {
     throw error;
   }
 };
-
 
 // const getUserBySearch = async (query, options) => {
 //   try {

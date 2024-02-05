@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'id', // Correct the foreign key reference
     });
     User.hasMany(models.Hotel, {
-      foreignKey: 'userId', // Correct the foreign key reference to hotelId
+      foreignKey: 'vendorId', // Correct the foreign key reference to hotelId
       // targetkey: 'id'
       // onDelete: 'CASCADE'
     });

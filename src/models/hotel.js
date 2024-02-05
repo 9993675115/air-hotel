@@ -8,7 +8,7 @@ const Hotel = sequelize.define('Hotel', {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  userId:{
+  vendorId:{
     type: DataTypes.INTEGER,
     references: {
       model: 'User', // Assuming your Category model name is 'Category' and table name is 'Categories'
@@ -117,7 +117,7 @@ const Hotel = sequelize.define('Hotel', {
       // Correct foreign key for Room association
     });
     Hotel.belongsTo(models.User, {
-      foreignKey: 'userId',
+      foreignKey: 'vendorId',
       // Correct foreign key for Room association
     });
   };

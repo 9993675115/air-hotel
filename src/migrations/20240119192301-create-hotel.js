@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },  
-      userId:{
+      vendorId:{
         type: Sequelize.INTEGER,
       },
       categoryId: {
